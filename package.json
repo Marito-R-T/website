@@ -31,8 +31,7 @@
     "@nuxtjs/color-mode": "^3.4.1",
     "@nuxtjs/tailwindcss": "^6.12.0",
     "@tailwindcss/typography": "^0.5.13",
-    "nuxt-icon": "^0.6.10",
-    "remark-rehype": "^11.1.0"
+    "nuxt-icon": "^0.6.10"
   },
   "devDependencies": {
     "@iconify-json/fa-brands": "^1.1.9",
