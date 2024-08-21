@@ -8,7 +8,6 @@ export default defineNuxtConfig({
   
   css: [
       '~/assets/css/main.css',
-      '~/assets/css/dracula.css'
   ],
 
   modules: [
@@ -44,19 +43,21 @@ export default defineNuxtConfig({
     defaultLocale: 'es',
   },
   i18n: {
-    vueI18n: './i18n.config.ts',
     locales: [
       {
         code: 'en',
+        file: 'en.json',
         name: 'English',
       },
       {
         code: 'es',
+        file: 'es.json',
         name: 'Español'
       }
     ],
     strategy: 'prefix',
     defaultLocale: 'es',
+    langDir: 'locales/'
   },
 
   compatibilityDate: '2024-08-18'

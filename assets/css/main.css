@@ -8,11 +8,6 @@
       text-shadow: none !important;
     }
   
-    a,
-    a:visited {
-      text-decoration: underline;
-    }
-  
     a[href]:after {
       content: " (" attr(href) ")";
     }
@@ -77,11 +72,33 @@
   body {
     line-height: 1.85;
   }
+
+  hr {
+    margin-bottom: 0em !important;
+    margin-top: 0em !important;
+  }
+  
+  /* Definitions */
+  dt {
+      float: left;
+      clear: left;
+      width: 17%;
+  }
+  dd {
+      margin-left: 17%;
+      margin-bottom:10px;
+  }
   
   p,
   .air-p {
-    font-size: 1rem;
-    margin-bottom: 1.3rem;
+    font-size: 0.9rem;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    text-align: left;
+  }
+
+  blockquote p {
+    text-align: center !important;
   }
   
   h1,
@@ -106,6 +123,22 @@
   h2,
   .air-h2 {
     font-size: 2.827rem;
+    text-align: left;
+    margin-top: 1em !important;
+  }
+  /* There is a bar just before each category */
+  h2:before {
+      content: "";
+      display: inline-block;
+      margin-right:1%;
+      width: 16%;
+      height: 10px;
+      background-color: #791bb4;
+  }
+  h2:hover {
+      background-color: #d0d0d0;
+      color: #000000 !important;
+      text-shadow: 1px 1px 1px #000000;
   }
   
   h3,
@@ -162,16 +195,16 @@
     margin: 0 auto;
     width: 200px;
   }
-  
-  a,
-  a:visited {
-    color: #3498db;
+
+  /* Links */
+  a {
+    text-decoration: none;
+    color: #380657;
+    border-style: none !important;
   }
-  
-  a:hover,
-  a:focus,
-  a:active {
-    color: #2980b9;
+  a:hover, a:active {
+      color: #380657;
+      text-decoration: underline;
   }
   
   pre {
@@ -181,19 +214,14 @@
   }
   
   blockquote {
-    margin: 0;
+    margin: 0 !important;
     border-left: 5px solid #7a7a7a;
     font-style: italic;
-    padding: 1.33em;
-    text-align: left;
+    text-align: center !important;
   }
   
   ul,
   ol,
   li {
     text-align: left;
-  }
-  
-  p {
-    color: #777;
   }

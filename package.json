@@ -12,7 +12,8 @@
     "preview": "nuxi preview",
     "lint": "eslint .",
     "postinstall": "nuxt prepare",
-    "release": "release-it"
+    "release": "release-it",
+    "deploy": "nuxt generate && deployment --dotfiles -d .output/public"
   },
   "files": [
     "app/",
