@@ -1,7 +1,10 @@
 <template>
-  <ContentRenderer :key="data._id" :value="data.body">
-    <ContentRendererMarkdown :value="data" />
-  </ContentRenderer>
+  <div>
+    <title>{{ $t('Home') + ' - Mario' }}</title>
+    <ContentRenderer :key="data._id" :value="data.body">
+      <ContentRendererMarkdown :value="data" />
+    </ContentRenderer>
+  </div>
 </template>
 
 <script setup>
