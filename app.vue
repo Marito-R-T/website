@@ -1,11 +1,8 @@
 <template>
-  <defaultLayout class="width-xxl">
-    <NuxtPage />
-  </defaultLayout>
+  <NuxtPage />
 </template>
 
 <script setup lang="ts">
-import defaultLayout from '~/layouts/default-layout.vue';
 </script>
 
 <style>

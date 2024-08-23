@@ -1,7 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+
+  generate: {
+    routes: ['/es', '/en', '/es/about', '/en/about', '/es/cv', 'en/cv']
+  },
+
   app: {
-    baseURL: '/website/'
+    baseURL: '/website/',
+    cdnURL: 'https://main--maritowebsite.netlify.app/'
   },
 
   devtools: { enabled: true },
@@ -12,6 +18,7 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxt/content',
+    '@nuxt/eslint',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     'nuxt-icon',
@@ -33,9 +40,6 @@ export default defineNuxtConfig({
         dark: 'github-dark',
         default: 'github-light'
       }
-    },
-    markdown: {
-      
     },
     locales:[
       'es', 'en'
