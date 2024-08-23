@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import ColorModeSwitch from './ColorModeSwitch.vue';
 
 const { navigation } = useContent()
 const appConfig = useAppConfig()
@@ -7,7 +6,7 @@ const { setLocale } = useI18n()
 const { locale: { value: localCode }} = useI18n()
 const code = ref(localCode)
 
-const changeLocale = async (c:string) =>{
+const changeLocale = (c:string) =>{
   setLocale(c);
   code.value = c;
 }
