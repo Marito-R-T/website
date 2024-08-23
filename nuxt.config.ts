@@ -1,10 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 
-  generate: {
-    routes: ['/es', '/en', '/es/about', '/en/about', '/es/cv', 'en/cv']
-  },
-
   app: {
     baseURL: '/website/',
     cdnURL: 'https://main--maritowebsite.netlify.app/'
