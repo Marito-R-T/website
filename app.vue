@@ -7,6 +7,7 @@
 
 <style>
 body {
-  max-width: 80vw;
+  max-width: 100vw;
+  padding: 50px;
 }
 </style>
