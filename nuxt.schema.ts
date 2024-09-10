@@ -6,19 +6,11 @@ export default defineNuxtSchema({
      * Social media icons displayed in the navbar
      */
     socials: {
-      /**
-       * Twitter handle
-       * 
-       * @example 'Atinux'
-       * @studioIcon simple-icons:twitter
-       * */
       twitter: 'dice_marito',
-      /**
-       * Github repository name
-       * @example 'nuxt/framework'
-       * @studioIcon simple-icons:github
-       * */
-      github: 'Marito-R-T'
+      github: 'Marito-R-T',
+      facebook: 'mario.tobar.714049',
+      youtube: '@Mari.To_bar',
+    linkedin: 'marito-r-t'
     }
   }
 })
