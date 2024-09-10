@@ -1,7 +1,7 @@
 <template>
   <fwb-card
     img-alt="Yo"
-    img-src="img/yo.jpg"
+    img-src="/img/yo.jpg"
     variant="horizontal"
     class="min-w-full"
   >
