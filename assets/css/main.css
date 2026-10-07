@@ -1,229 +1,112 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,300);
-  
-  @media print {
-    *,
-    *:before,
-    *:after {
-      background: transparent !important;
-      color: #000 !important;
-      box-shadow: none !important;
-      text-shadow: none !important;
-    }
-  
-    a[href]:after {
-      content: " (" attr(href) ")";
-    }
-  
-    abbr[title]:after {
-      content: " (" attr(title) ")";
-    }
-  
-    a[href^="#"]:after,
-    a[href^="javascript:"]:after {
-      content: "";
-    }
-  
-    pre,
-    blockquote {
-      border: 1px solid #999;
-      page-break-inside: avoid;
-    }
-  
-    thead {
-      display: table-header-group;
-    }
-  
-    tr,
-    img {
-      page-break-inside: avoid;
-    }
-  
-    img {
-      max-width: 100% !important;
-    }
-  
-    p,
-    h2,
-    h3 {
-      orphans: 3;
-      widows: 3;
-    }
-  
-    h2,
-    h3 {
-      page-break-after: avoid;
-    }
-  }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+@layer base {
   html {
-    font-size: 12px;
+    scroll-behavior: smooth;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   }
-  
-  @media screen and (min-width: 32rem) and (max-width: 48rem) {
-    html {
-      font-size: 15px;
-    }
-  }
-  
-  @media screen and (min-width: 48rem) {
-    html {
-      font-size: 16px;
-    }
-  }
-  
+
   body {
-    line-height: 1.85;
+    background-color: #F6F3EB;
+    color: #111111;
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
   }
 
-  hr {
-    margin-bottom: 0em !important;
-    margin-top: 0em !important;
-  }
-  
-  /* Definitions */
-  dt {
-      float: left;
-      clear: left;
-      width: 17%;
-  }
-  dd {
-      margin-left: 17%;
-      margin-bottom:10px;
-  }
-  
-  p,
-  .air-p {
-    font-size: 0.9rem;
-    margin-bottom: 0 !important;
-    margin-top: 0 !important;
+  .dark body {
+    background-color: #121411;
+    color: #F3F4F6;
   }
 
-  blockquote p {
-    text-align: center !important;
+  ::selection {
+    background-color: #FBE795;
+    color: #111111;
   }
-  
-  h1,
-  .air-h1,
-  h2,
-  .air-h2,
-  h3,
-  .air-h3,
-  h4,
-  .air-h4 {
-    margin: 1.414rem 0 .5rem;
-    font-weight: inherit;
-    line-height: 1.42;
-  }
-  
-  h1,
-  .air-h1 {
-    margin-top: 0;
-    font-size: 3.998rem;
-    text-align: center !important;
-  }
-  
-  h2,
-  .air-h2 {
-    font-size: 2.827rem;
-    text-align: left;
-    margin-top: 1em !important;
-  }
-  /* There is a bar just before each category */
-  h2:before {
-      content: "";
-      display: inline-block;
-      margin-right:1%;
-      width: 16%;
-      height: 10px;
-      background-color: #791bb4;
-  }
-  h2:hover {
-      background-color: #d0d0d0;
-      color: #000000 !important;
-      text-shadow: 1px 1px 1px #000000;
-  }
-  
-  h3,
-  .air-h3 {
-    font-size: 1.999rem;
-  }
-  
-  h4,
-  .air-h4 {
-    font-size: 1.414rem;
-  }
-  
-  h5,
-  .air-h5 {
-    font-size: 1.121rem;
-  }
-  
-  h6,
-  .air-h6 {
-    font-size: .88rem;
-  }
-  
-  small,
-  .air-small {
-    font-size: .707em;
-  }
-  
-  /* https://github.com/mrmrs/fluidity */
-  
-  img,
-  canvas,
-  iframe,
-  video,
-  svg,
-  select,
-  textarea {
-    max-width: 100%;
-  }
-  
-  body {
-    color: #444;
-    font-family: 'Open Sans', Helvetica, sans-serif;
-    font-weight: 300;
-    margin: 6rem auto 1rem;
-    max-width: 48rem;
-    text-align: center;
-  }
-  
-  img {
-    border-radius: 3%;
-    height: 350px;
-    margin: 0 auto !important;
-    border-style: solid;
-    border-width: 2px;
-    border-color: #000;
+}
+
+@layer components {
+  /* Bento Base Card */
+  .bento-card {
+    @apply relative overflow-hidden rounded-2xl md:rounded-3xl border-2 border-black bg-white p-6 
+           shadow-brutal transition-all duration-200 ease-out 
+           dark:border-white dark:bg-[#1A1D19] dark:shadow-brutal-white;
   }
 
-  /* Links */
-  a {
-    text-decoration: none;
-    color: #380657;
-    border-style: none !important;
+  .bento-card-interactive {
+    @apply hover:-translate-y-1 hover:shadow-brutal-lg dark:hover:shadow-brutal-white-lg;
   }
-  a:hover, a:active {
-      color: #380657;
-      text-decoration: underline;
+
+  /* Neo-brutalist buttons */
+  .neo-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border-2 border-black bg-white px-4 py-2 
+           text-sm font-bold text-black shadow-brutal-sm transition-all duration-150 
+           hover:-translate-y-0.5 hover:shadow-brutal active:translate-x-0.5 active:translate-y-0.5 active:shadow-none
+           dark:border-white dark:bg-[#232721] dark:text-white dark:shadow-brutal-white-sm dark:hover:shadow-brutal-white;
   }
-  
-  pre {
-    background-color: #fafafa;
-    padding: 1rem;
-    text-align: left;
+
+  .neo-btn-primary {
+    @apply border-2 border-black bg-[#F4B6A6] text-black shadow-brutal-sm 
+           hover:bg-[#f2a794] hover:shadow-brutal dark:border-white dark:bg-[#F4B6A6] dark:text-black;
   }
-  
-  blockquote {
-    margin: 0 !important;
-    border-left: 5px solid #7a7a7a;
-    font-style: italic;
-    text-align: center !important;
+
+  .neo-btn-accent {
+    @apply border-2 border-black bg-[#FBE795] text-black shadow-brutal-sm 
+           hover:bg-[#fae27e] hover:shadow-brutal dark:border-white dark:bg-[#FBE795] dark:text-black;
   }
-  
-  ul,
-  ol,
-  li {
-    text-align: left;
+
+  .neo-btn-sage {
+    @apply border-2 border-black bg-[#C6D8C4] text-black shadow-brutal-sm 
+           hover:bg-[#b8cbb6] hover:shadow-brutal dark:border-white dark:bg-[#C6D8C4] dark:text-black;
   }
+
+  .neo-btn-cobalt {
+    @apply border-2 border-black bg-[#3056D3] text-white shadow-brutal-sm 
+           hover:bg-[#2546b8] hover:shadow-brutal dark:border-white;
+  }
+
+  /* Badges & Pills */
+  .neo-pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border-2 border-black px-3 py-1 
+           text-xs font-bold font-mono shadow-[2px_2px_0px_0px_#111111]
+           dark:border-white dark:shadow-[2px_2px_0px_0px_#FFFFFF];
+  }
+
+  .stamp-tag {
+    @apply uppercase tracking-wider font-mono text-[10px] font-extrabold px-2 py-0.5 rounded border border-black dark:border-white;
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #F6F3EB;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #121411;
+}
+::-webkit-scrollbar-thumb {
+  background: #111111;
+  border-radius: 4px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #D4D4D8;
+}
+
+/* Subtle Halftone Pattern Utility */
+.bg-halftone {
+  background-image: radial-gradient(rgba(17, 17, 17, 0.12) 1.5px, transparent 1.5px);
+  background-size: 16px 16px;
+}
+.dark .bg-halftone {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px);
+  background-size: 16px 16px;
+}

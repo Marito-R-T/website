@@ -1,5 +1,24 @@
 {
-    "About": "About",
-    "CV": "CV",
-    "Home": "Home"
+  "Home": "Home",
+  "About": "About",
+  "CV": "Curriculum",
+  "Courses": "Courses & Teaching",
+  "Presentations": "Slides",
+  "Contact": "Contact",
+  "Role": "Software Engineer & University Professor",
+  "Tagline": "I design high-performance systems, teach computer science, and extract value from large-scale data.",
+  "ExploreCourses": "Explore Courses",
+  "ViewCV": "View Curriculum",
+  "AcademicRole": "Lecturer at CUNOC - San Carlos University",
+  "AvailableForWork": "Available for projects & consulting",
+  "TechStack": "Tech Arsenal",
+  "FeaturedCourse": "Featured Course",
+  "SlideCount": "interactive presentations",
+  "OpenSlide": "Open Presentation",
+  "FullScreen": "Fullscreen",
+  "BackToCourses": "Back to Courses",
+  "QuickStats": "By The Numbers",
+  "YearsExp": "Years of experience",
+  "StudentsMentored": "+ Students mentored",
+  "ProductionProjects": "Production systems"
 }

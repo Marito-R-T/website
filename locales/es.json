@@ -1,5 +1,24 @@
 {
-    "About": "Acerca de",
-    "CV": "CV",
-    "Home": "Inicio"
+  "Home": "Inicio",
+  "About": "Acerca de",
+  "CV": "Currículum",
+  "Courses": "Cursos & Docencia",
+  "Presentations": "Diapositivas",
+  "Contact": "Contacto",
+  "Role": "Ingeniero de Software & Catedrático Universitario",
+  "Tagline": "Diseño y desarrollo sistemas de alto rendimiento, enseño ciencias de la computación y transformo datos en valor.",
+  "ExploreCourses": "Ver Cursos",
+  "ViewCV": "Ver Currículum",
+  "AcademicRole": "Catedrático en CUNOC - Universidad de San Carlos",
+  "AvailableForWork": "Disponible para proyectos & consultoría",
+  "TechStack": "Arsenal Tecnológico",
+  "FeaturedCourse": "Materia Destacada",
+  "SlideCount": "presentaciones interactivas",
+  "OpenSlide": "Abrir Diapositiva",
+  "FullScreen": "Pantalla Completa",
+  "BackToCourses": "Volver a Cursos",
+  "QuickStats": "En Cifras",
+  "YearsExp": "Años de experiencia",
+  "StudentsMentored": "+ Alumnos formados",
+  "ProductionProjects": "Sistemas en producción"
 }
