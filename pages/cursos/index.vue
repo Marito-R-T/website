@@ -3,28 +3,30 @@
     <!-- Header Bento Card -->
     <BentoCard
       color="butter"
-      stamp="DOCENCIA CUNOC"
+      :stamp="$t('CoursesBadge') || 'CUNOC'"
     >
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div class="inline-flex items-center gap-2 rounded-full border border-black/20 bg-white/70 px-3 py-0.5 font-mono text-xs font-bold text-black mb-2 dark:border-white/20 dark:bg-black/30 dark:text-white">
-            <Icon name="heroicons:academic-cap-20-solid" class="w-4 h-4 text-neutral-800 dark:text-neutral-200" />
-            <span>Plataforma Académica</span>
+            <svg class="w-4 h-4 text-neutral-800 dark:text-neutral-200" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+            </svg>
+            <span>{{ $t('CoursesPlatform') }}</span>
           </div>
-          <h1 class="font-display text-3xl md:text-4xl font-black text-black dark:text-white">
-            Cursos & Diapositivas Interactivas
+          <h1 class="font-display text-3xl md:text-4xl font-extrabold text-black dark:text-white">
+            {{ $t('CoursesHeaderTitle') }}
           </h1>
           <p class="mt-2 text-sm md:text-base font-medium text-neutral-800 dark:text-neutral-200 max-w-2xl">
-            Material de clase y presentaciones dinámicas creadas con Reveal.js para estudiantes de Ciencias de la Computación e Ingeniería de Sistemas.
+            {{ $t('CoursesHeaderDesc') }}
           </p>
         </div>
 
         <div class="p-3 rounded-2xl border-2 border-black bg-white dark:border-white dark:bg-[#1E221D] shadow-brutal-sm shrink-0">
           <p class="font-mono text-xs font-bold text-neutral-700 dark:text-neutral-300">
-            Consejo de navegación:
+            {{ $t('NavTipTitle') }}
           </p>
           <p class="font-mono text-[11px] text-neutral-600 dark:text-neutral-400 mt-1">
-            Usa <kbd class="px-1 border border-black rounded bg-amber-100 text-black">←</kbd> <kbd class="px-1 border border-black rounded bg-amber-100 text-black">→</kbd> o <kbd class="px-1 border border-black rounded bg-amber-100 text-black">Espacio</kbd> dentro de cada presentación.
+            {{ $t('NavTipDesc') }}
           </p>
         </div>
       </div>
@@ -49,7 +51,7 @@
               {{ course.code }}
             </span>
             <div>
-              <h2 class="font-display text-xl md:text-2xl font-black text-black dark:text-white">
+              <h2 class="font-display text-xl md:text-2xl font-extrabold text-black dark:text-white">
                 {{ course.name }}
               </h2>
               <span class="font-mono text-xs text-neutral-600 dark:text-neutral-400">
@@ -60,19 +62,19 @@
 
           <div class="flex items-center gap-2">
             <span class="rounded-lg border border-black/20 bg-neutral-100 px-2 py-1 font-mono text-xs font-bold text-neutral-700 dark:border-white/20 dark:bg-neutral-800 dark:text-neutral-300">
-              {{ course.slides.length }} {{ course.slides.length === 1 ? 'diapositiva' : 'diapositivas' }}
+              {{ course.slides.length }} {{ $t('SlideCount') }}
             </span>
           </div>
         </div>
 
-        <p class="mt-4 text-sm text-neutral-700 dark:text-neutral-300">
+        <p class="mt-4 text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed">
           {{ course.description }}
         </p>
 
         <!-- Slides List -->
         <div class="mt-6">
           <h3 class="font-mono text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3">
-            Diapositivas y Unidades Disponibles:
+            {{ $t('AvailableSlidesHeader') }}
           </h3>
 
           <div v-if="course.slides.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -91,7 +93,7 @@
                   </span>
                 </div>
 
-                <h4 class="mt-2 font-display text-base md:text-lg font-black text-black dark:text-white">
+                <h4 class="mt-2 font-display text-base md:text-lg font-extrabold text-black dark:text-white">
                   {{ slide.title }}
                 </h4>
 
@@ -117,8 +119,10 @@
                   class="neo-btn neo-btn-accent text-xs flex-1"
                   @click="openSlide(slide.file, slide.title, course.name)"
                 >
-                  <Icon name="heroicons:play-20-solid" class="w-3.5 h-3.5" />
-                  <span>Ver en Visor</span>
+                  <svg class="w-3.5 h-3.5 text-black" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                  </svg>
+                  <span>{{ $t('OpenInTheater') }}</span>
                 </button>
 
                 <a
@@ -126,9 +130,11 @@
                   target="_blank"
                   rel="noopener noreferrer"
                   class="neo-btn text-xs px-2.5"
-                  title="Abrir en pestaña nueva"
+                  :title="$t('FullScreen')"
                 >
-                  <Icon name="heroicons:arrow-top-right-on-square-20-solid" class="w-3.5 h-3.5" />
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
                 </a>
               </div>
             </div>
@@ -139,9 +145,8 @@
             v-else
             class="p-6 rounded-2xl border-2 border-dashed border-black/30 text-center dark:border-white/30"
           >
-            <Icon name="heroicons:folder-open-20-solid" class="mx-auto w-6 h-6 text-neutral-400 mb-2" />
             <p class="font-mono text-xs font-bold text-neutral-600 dark:text-neutral-400">
-              Próximas diapositivas en proceso de redacción para los siguientes temas del curso.
+              {{ $t('UpcomingSlides') }}
             </p>
           </div>
         </div>

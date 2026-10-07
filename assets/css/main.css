@@ -17,11 +17,13 @@
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
-  .dark body {
-    background-color: #121411;
-    color: #F3F4F6;
+  html.dark,
+  html.dark body {
+    background-color: #121411 !important;
+    color: #F3F4F6 !important;
   }
 
   ::selection {
@@ -90,14 +92,14 @@
 ::-webkit-scrollbar-track {
   background: #F6F3EB;
 }
-.dark ::-webkit-scrollbar-track {
+html.dark ::-webkit-scrollbar-track {
   background: #121411;
 }
 ::-webkit-scrollbar-thumb {
   background: #111111;
   border-radius: 4px;
 }
-.dark ::-webkit-scrollbar-thumb {
+html.dark ::-webkit-scrollbar-thumb {
   background: #D4D4D8;
 }
 
@@ -106,7 +108,7 @@
   background-image: radial-gradient(rgba(17, 17, 17, 0.12) 1.5px, transparent 1.5px);
   background-size: 16px 16px;
 }
-.dark .bg-halftone {
+html.dark .bg-halftone {
   background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px);
   background-size: 16px 16px;
 }
