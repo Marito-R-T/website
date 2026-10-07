@@ -12,7 +12,7 @@
         </span>
         <div class="flex flex-col">
           <span class="font-sans text-base font-extrabold tracking-normal text-black dark:text-white">
-            MARIO.DEV
+            MARITO.rt.dev
           </span>
           <span class="font-mono text-[10px] font-bold text-neutral-600 dark:text-neutral-400">
             SOFTWARE & CÁTEDRA
@@ -84,12 +84,12 @@
         <!-- Dark Mode Switch -->
         <ColorModeSwitch />
 
-        <!-- GitHub Quick Icon with Inline Bulletproof SVG -->
+        <!-- GitHub Quick Icon (sm and up in navbar, also in mobile drawer) -->
         <a
           href="https://github.com/Marito-R-T"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border-2 border-black bg-white text-black shadow-brutal-sm hover:-translate-y-0.5 hover:shadow-brutal active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all dark:border-white dark:bg-[#1E221D] dark:text-white dark:shadow-brutal-white-sm"
+          class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border-2 border-black bg-white text-black shadow-brutal-sm hover:-translate-y-0.5 hover:shadow-brutal active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all dark:border-white dark:bg-[#1E221D] dark:text-white dark:shadow-brutal-white-sm"
           title="Ver perfil de GitHub"
           aria-label="GitHub de Mario"
         >
@@ -150,6 +150,16 @@
         >
           {{ $t('About') }}
         </NuxtLink>
+        <a
+          href="https://github.com/Marito-R-T"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="rounded-xl border-2 border-black bg-black text-white px-4 py-2 font-bold flex items-center justify-between shadow-brutal-sm dark:border-white dark:bg-white dark:text-black"
+          @click="mobileOpen = false"
+        >
+          <span>GitHub</span>
+          <span class="font-mono text-xs">↗</span>
+        </a>
       </nav>
     </div>
   </header>

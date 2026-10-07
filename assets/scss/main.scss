@@ -1,0 +1,67 @@
+@use 'tokens' as *;
+@use 'badges';
+@use 'buttons';
+@use 'bento';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: $font-sans;
+  }
+
+  body {
+    background-color: $bg-canvas;
+    color: $color-black;
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  html.dark,
+  html.dark body {
+    background-color: $bg-canvas-dark !important;
+    color: #F3F4F6 !important;
+  }
+
+  ::selection {
+    background-color: $color-butter;
+    color: $color-black;
+  }
+}
+
+// Custom Scrollbars
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: $bg-canvas;
+}
+html.dark ::-webkit-scrollbar-track {
+  background: $bg-canvas-dark;
+}
+::-webkit-scrollbar-thumb {
+  background: $color-black;
+  border-radius: 4px;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #D4D4D8;
+}
+
+// Subtle Halftone Pattern Utility
+.bg-halftone {
+  background-image: radial-gradient(rgba(17, 17, 17, 0.12) 1.5px, transparent 1.5px);
+  background-size: 16px 16px;
+}
+html.dark .bg-halftone {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px);
+  background-size: 16px 16px;
+}

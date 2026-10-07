@@ -85,12 +85,6 @@
           <span class="mx-2">●</span>
           <span>QUETZALTENANGO, GT</span>
         </div>
-        <div class="flex items-center gap-2">
-          <span>BUILT WITH NUXT & VUE</span>
-          <span class="rounded bg-[#FBE795] px-1.5 py-0.5 font-bold text-black border border-black dark:border-white">
-            BENTO NEO-BRUTALISM
-          </span>
-        </div>
       </div>
     </div>
   </footer>

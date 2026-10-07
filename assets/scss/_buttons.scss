@@ -1,0 +1,147 @@
+@use 'tokens' as *;
+@use 'sass:color';
+
+// ==============================================================================
+// NEO-BRUTALIST BUTTONS
+// ==============================================================================
+
+.neo-btn,
+button.neo-btn,
+a.neo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  border: $border-solid-black;
+  background-color: $color-white;
+  padding: 0.5rem 1rem;
+  font-family: $font-sans;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: $color-black;
+  box-shadow: $shadow-brutal-sm;
+  transition: all 0.15s ease-out;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  line-height: 1.25;
+
+  html.dark & {
+    border: $border-solid-white;
+    background-color: #232721;
+    color: #FFFFFF;
+    box-shadow: $shadow-brutal-white-sm;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-brutal;
+
+    html.dark & {
+      box-shadow: $shadow-brutal-white;
+    }
+  }
+
+  &:active {
+    transform: translate(1px, 1px);
+    box-shadow: none;
+
+    html.dark & {
+      box-shadow: none;
+    }
+  }
+
+  // Sizes
+  &--sm {
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    border-radius: 0.5rem;
+  }
+
+  &--lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 1rem;
+  }
+
+  &--icon {
+    padding: 0.5rem;
+    border-radius: 0.75rem;
+  }
+
+  // Color Variants (BEM and utility aliases)
+  &--accent,
+  &.neo-btn-accent {
+    background-color: $color-butter;
+    color: $color-black;
+
+    html.dark & {
+      background-color: $color-butter;
+      color: $color-black;
+    }
+
+    &:hover {
+      background-color: color.adjust($color-butter, $lightness: -5%);
+    }
+  }
+
+  &--primary,
+  &.neo-btn-primary {
+    background-color: $color-coral;
+    color: $color-black;
+
+    html.dark & {
+      background-color: $color-coral;
+      color: $color-black;
+    }
+
+    &:hover {
+      background-color: color.adjust($color-coral, $lightness: -5%);
+    }
+  }
+
+  &--sage,
+  &.neo-btn-sage {
+    background-color: $color-sage;
+    color: $color-black;
+
+    html.dark & {
+      background-color: $color-sage;
+      color: $color-black;
+    }
+
+    &:hover {
+      background-color: color.adjust($color-sage, $lightness: -5%);
+    }
+  }
+
+  &--cobalt,
+  &.neo-btn-cobalt {
+    background-color: $color-cobalt;
+    color: $color-black;
+
+    html.dark & {
+      background-color: #3056D3;
+      color: #FFFFFF;
+    }
+
+    &:hover {
+      background-color: color.adjust($color-cobalt, $lightness: -6%);
+    }
+  }
+
+  &--mint {
+    background-color: $color-mint;
+    color: $color-black;
+
+    html.dark & {
+      background-color: $color-mint;
+      color: $color-black;
+    }
+
+    &:hover {
+      background-color: color.adjust($color-mint, $lightness: -5%);
+    }
+  }
+}

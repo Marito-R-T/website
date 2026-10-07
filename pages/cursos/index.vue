@@ -1,19 +1,21 @@
 <template>
   <div class="space-y-6">
     <!-- Header Bento Card -->
-    <BentoCard
-      color="butter"
-      :stamp="$t('CoursesBadge') || 'CUNOC'"
-    >
+    <BentoCard color="butter">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div class="inline-flex items-center gap-2 rounded-full border border-black/20 bg-white/70 px-3 py-0.5 font-mono text-xs font-bold text-black mb-2 dark:border-white/20 dark:bg-black/30 dark:text-white">
-            <svg class="w-4 h-4 text-neutral-800 dark:text-neutral-200" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
-            </svg>
-            <span>{{ $t('CoursesPlatform') }}</span>
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-2 mb-2">
+            <div class="inline-flex items-center gap-2 rounded-full border border-black/20 bg-white/70 px-3 py-0.5 font-mono text-xs font-bold text-black dark:border-white/20 dark:bg-black/30 dark:text-white">
+              <svg class="w-4 h-4 text-neutral-800 dark:text-neutral-200" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+              </svg>
+              <span>{{ $t('CoursesPlatform') }}</span>
+            </div>
+            <span class="neo-stamp bg-white text-black shrink-0">
+              {{ $t('CoursesBadge') || 'CUNOC' }}
+            </span>
           </div>
-          <h1 class="font-display text-3xl md:text-4xl font-extrabold text-black dark:text-white">
+          <h1 class="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-black dark:text-white">
             {{ $t('CoursesHeaderTitle') }}
           </h1>
           <p class="mt-2 text-sm md:text-base font-medium text-neutral-800 dark:text-neutral-200 max-w-2xl">
@@ -21,7 +23,7 @@
           </p>
         </div>
 
-        <div class="p-3 rounded-2xl border-2 border-black bg-white dark:border-white dark:bg-[#1E221D] shadow-brutal-sm shrink-0">
+        <div class="p-3 rounded-2xl border-2 border-black bg-white dark:border-white dark:bg-[#1E221D] shadow-brutal-sm shrink-0 self-start md:self-auto">
           <p class="font-mono text-xs font-bold text-neutral-700 dark:text-neutral-300">
             {{ $t('NavTipTitle') }}
           </p>
@@ -128,7 +130,7 @@
                   <svg class="w-3.5 h-3.5 text-black" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
                   </svg>
-                  <span class="font-bold">{{ $t('OpenInTheater') }}</span>
+                  <span class="font-bold text-black">{{ $t('OpenInTheater') }}</span>
                 </button>
 
                 <a

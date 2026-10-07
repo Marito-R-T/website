@@ -1,0 +1,45 @@
+// ==============================================================================
+// DESIGN TOKENS - NEO-BRUTALIST BENTO SYSTEM
+// ==============================================================================
+
+// Colors - Light Mode
+$bg-canvas: #F6F3EB;
+$color-butter: #FBE795;
+$color-sage: #C6D8C4;
+$color-coral: #F4B6A6;
+$color-cobalt: #B8C9F8;
+$color-lilac: #DCC6E0;
+$color-mint: #B5EAD7;
+$color-white: #FFFFFF;
+$color-black: #111111;
+
+// Colors - Dark Mode
+$bg-canvas-dark: #121411;
+$color-butter-dark: #383015;
+$color-sage-dark: #202F22;
+$color-coral-dark: #3D221D;
+$color-cobalt-dark: #1D2644;
+$color-lilac-dark: #322238;
+$color-mint-dark: #17342C;
+$color-card-dark: #1A1D19;
+$color-card-dark-alt: #20241E;
+
+// Structural Strokes
+$border-width: 2px;
+$border-solid-black: 2px solid #111111;
+$border-solid-white: 2px solid #FFFFFF;
+
+// Hard Offset Shadows (Neo-Brutalist)
+$shadow-brutal-sm: 2px 2px 0px 0px #111111;
+$shadow-brutal: 4px 4px 0px 0px #111111;
+$shadow-brutal-lg: 6px 6px 0px 0px #111111;
+$shadow-brutal-xl: 8px 8px 0px 0px #111111;
+
+$shadow-brutal-white-sm: 2px 2px 0px 0px #FFFFFF;
+$shadow-brutal-white: 4px 4px 0px 0px #FFFFFF;
+$shadow-brutal-white-lg: 6px 6px 0px 0px #FFFFFF;
+
+// Typography Fonts
+$font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+$font-display: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+$font-mono: 'JetBrains Mono', ui-monospace, monospace;
