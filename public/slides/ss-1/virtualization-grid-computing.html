@@ -1,0 +1,2912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Virtualización y Grid Computing • Seminario de Sistemas 1</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Reveal.js CDN CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/white.min.css" id="theme">
+  
+  <style>
+    :root {
+      --bg-canvas: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --bg-hero: #EFF6FF;
+      --bg-orange-soft: #FFF7ED;
+      --border-card: #E2E8F0;
+      --border-hero: #BFDBFE;
+      --border-orange: #FED7AA;
+      --text-navy: #0F172A;
+      --text-body: #334155;
+      --text-muted: #64748B;
+      --blue-tech: #2563EB;
+      --blue-deep: #1E40AF;
+      --sky: #0284C7;
+      --orange-accent: #EA580C;
+      --orange-vibrant: #F97316;
+      --amber: #D97706;
+      --green: #059669;
+      --card-radius: 14px;
+      --shadow-subtle: 0 4px 14px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+    }
+
+    body, .reveal {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+      background-color: var(--bg-canvas) !important;
+      color: var(--text-body) !important;
+      font-size: 16px;
+    }
+
+    .reveal .slides {
+      text-align: left;
+    }
+
+    .reveal section {
+      height: 100%;
+      padding: 0 !important;
+      box-sizing: border-box;
+    }
+
+    /* Layout Base del Slide Bento (16:9) */
+    .bento-slide-wrapper {
+      width: 1200px;
+      height: 675px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+      padding: 24px 32px 20px 32px;
+      background: var(--bg-canvas);
+      position: relative;
+    }
+
+    /* Cabecera Bento */
+    .slide-header {
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+
+    .slide-category {
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      color: var(--blue-tech);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slide-category .badge-pill {
+      background: #DBEAFE;
+      color: var(--blue-deep);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .slide-category .badge-orange {
+      background: #FFEDD5;
+      color: var(--orange-accent);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .slide-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-navy);
+      line-height: 1.2;
+      letter-spacing: -0.4px;
+    }
+
+    .slide-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+    /* Grids Bento */
+    .bento-grid {
+      flex: 1;
+      display: grid;
+      gap: 14px;
+      min-height: 0;
+    }
+
+    .grid-hero-split {
+      grid-template-columns: 1.35fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+    .grid-hero-split .bento-hero {
+      grid-column: 1 / 2;
+      grid-row: 1 / 3;
+    }
+
+    .grid-quad {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    .grid-triptych {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr;
+    }
+
+    .grid-banner-trio {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto 1fr;
+    }
+    .grid-banner-trio .bento-banner {
+      grid-column: 1 / 4;
+    }
+
+    .grid-banner-duo {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto 1fr;
+    }
+    .grid-banner-duo .bento-banner {
+      grid-column: 1 / 3;
+    }
+
+    /* Tarjetas Bento */
+    .bento-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--card-radius);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-subtle);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bento-hero {
+      background: linear-gradient(170deg, #F0F7FF 0%, #FFFFFF 100%);
+      border: 1.5px solid var(--border-hero);
+    }
+
+    .bento-card-orange {
+      background: linear-gradient(170deg, #FFF9F5 0%, #FFFFFF 100%);
+      border: 1.5px solid var(--border-orange);
+    }
+
+    .card-badge {
+      display: inline-flex;
+      align-self: flex-start;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--blue-tech);
+      background: #EFF6FF;
+      border: 1px solid #DBEAFE;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .card-badge-orange {
+      color: var(--orange-accent);
+      background: #FFF7ED;
+      border: 1px solid #FFEDD5;
+    }
+
+    .card-badge-green {
+      color: var(--green);
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-navy);
+      margin-bottom: 8px;
+      line-height: 1.25;
+    }
+
+    .bento-hero .card-title {
+      font-size: 1.3rem;
+    }
+
+    .card-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+      padding: 0;
+      margin: 0;
+    }
+
+    .card-points li {
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: var(--text-body);
+      position: relative;
+      padding-left: 16px;
+    }
+
+    .card-points li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--blue-tech);
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .card-points-orange li::before {
+      color: var(--orange-accent);
+    }
+
+    .card-highlight {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed #E2E8F0;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--blue-deep);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-highlight-orange {
+      color: var(--orange-accent);
+      border-top-color: #FFEDD5;
+    }
+
+    /* Stat Box Callout */
+    .stat-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--blue-tech);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-badge-orange {
+      color: var(--orange-accent);
+    }
+
+    /* Metáforas & Cajas Didácticas */
+    .analogy-box {
+      background: #F8FAFC;
+      border-left: 4px solid var(--blue-tech);
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.82rem;
+      color: var(--text-body);
+      margin: 8px 0;
+      line-height: 1.4;
+    }
+
+    .analogy-box-orange {
+      border-left-color: var(--orange-accent);
+      background: #FFF7ED;
+    }
+
+    /* Code Blocks */
+    pre.code-card {
+      margin: 0;
+      padding: 0;
+      border-radius: 8px;
+      background: #0F172A !important;
+      border: 1px solid #1E293B;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    pre.code-card code {
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.78rem !important;
+      line-height: 1.45 !important;
+      padding: 14px 16px !important;
+      color: #E2E8F0 !important;
+      overflow-x: auto;
+      overflow-y: auto;
+      flex: 1;
+      max-height: 400px;
+    }
+
+    /* Portada Especial */
+    .title-slide-container {
+      display: grid;
+      grid-template-columns: 1.45fr 1fr;
+      gap: 20px;
+      height: 100%;
+    }
+
+    .title-hero {
+      background: linear-gradient(150deg, #EFF6FF 0%, #FFFFFF 65%, #FFF7ED 100%);
+      border: 1.5px solid var(--border-hero);
+      border-radius: var(--card-radius);
+      padding: 38px 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .title-badge-top {
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--blue-tech);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .title-main {
+      font-size: 2.7rem;
+      font-weight: 800;
+      color: var(--text-navy);
+      line-height: 1.15;
+      margin: 16px 0 10px 0;
+      letter-spacing: -0.8px;
+    }
+
+    .title-sub {
+      font-size: 1.05rem;
+      color: var(--text-body);
+      line-height: 1.5;
+      max-width: 95%;
+    }
+
+    .title-author {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 2px solid #DBEAFE;
+      font-size: 0.95rem;
+      color: var(--text-navy);
+      font-weight: 700;
+    }
+
+    .title-author span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 400;
+      margin-top: 3px;
+    }
+
+    .title-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Footer del Slide */
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      border-top: 1px solid #E2E8F0;
+      padding-top: 6px;
+    }
+
+    .slide-footer strong {
+      color: var(--text-navy);
+    }
+
+    /* Barra Superior Persistente de Navegación */
+    .top-academic-bar {
+      position: fixed;
+      top: 8px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      font-size: 0.75rem;
+      pointer-events: none;
+    }
+
+    .top-academic-pill {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(8px);
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      color: var(--text-navy);
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      pointer-events: auto;
+    }
+
+    /* COMPONENTES INTERACTIVOS INTUITIVOS (TABLET READY) */
+    .interactive-simulator {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-hero);
+      border-radius: var(--card-radius);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-subtle);
+      height: 100%;
+      box-sizing: border-box;
+      touch-action: pan-y;
+    }
+
+    .sim-guide-banner {
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.78rem;
+      margin-bottom: 10px;
+    }
+
+    .sim-step-badge {
+      background: var(--blue-tech);
+      color: white;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+    }
+
+    .touch-btn {
+      background: var(--blue-tech);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+      min-height: 44px;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+    }
+
+    .touch-btn:active {
+      transform: scale(0.97);
+      background: var(--blue-deep);
+    }
+
+    .touch-btn-orange {
+      background: var(--orange-accent);
+      box-shadow: 0 2px 6px rgba(234, 88, 12, 0.25);
+    }
+    .touch-btn-orange:active {
+      background: #C2410C;
+    }
+
+    .touch-slider-container {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin: 4px 0;
+    }
+
+    .touch-slider-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-navy);
+    }
+
+    .touch-slider-label span.value-pill {
+      background: #EFF6FF;
+      color: var(--blue-tech);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    input[type="range"].touch-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 10px;
+      border-radius: 5px;
+      background: #E2E8F0;
+      outline: none;
+      touch-action: pan-x;
+    }
+
+    input[type="range"].touch-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--blue-tech);
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      border: 2px solid white;
+    }
+
+    input[type="range"].touch-slider-orange::-webkit-slider-thumb {
+      background: var(--orange-accent);
+    }
+
+    /* Gráfico de Nodos Físicos */
+    .nodes-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 6px;
+    }
+
+    .physical-host-box {
+      border: 1.5px solid #CBD5E1;
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: #F8FAFC;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .host-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 0.84rem;
+      color: var(--text-navy);
+    }
+
+    .meter-bar {
+      height: 12px;
+      background: #E2E8F0;
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .meter-fill {
+      height: 100%;
+      transition: width 0.35s ease;
+      background: var(--blue-tech);
+    }
+
+    .meter-fill-warning {
+      background: var(--orange-accent);
+    }
+
+    .meter-fill-danger {
+      background: #DC2626;
+    }
+
+    .vm-chip {
+      background: white;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .vm-chip.migrating {
+      animation: pulse-border 1s infinite alternate;
+      border-color: var(--orange-accent);
+      background: #FFF7ED;
+    }
+
+    @keyframes pulse-border {
+      0% { transform: scale(1); border-color: var(--orange-accent); }
+      100% { transform: scale(1.02); border-color: #2563EB; }
+    }
+
+    /* Reveal Controls & Paginación (Sin sobreposición) */
+    .reveal .controls {
+      color: var(--blue-tech) !important;
+      bottom: 16px !important;
+      right: 18px !important;
+    }
+
+    .reveal .controls button {
+      opacity: 0.85 !important;
+      filter: drop-shadow(0 2px 5px rgba(15, 23, 42, 0.15));
+      transition: all 0.2s ease;
+    }
+
+    .reveal .controls button:hover,
+    .reveal .controls button:active {
+      opacity: 1 !important;
+      transform: scale(1.08);
+    }
+
+    .reveal .progress {
+      color: var(--blue-tech) !important;
+      height: 5px !important;
+      background: rgba(15, 23, 42, 0.08) !important;
+    }
+    .reveal .progress span {
+      background: linear-gradient(90deg, var(--blue-tech) 0%, var(--orange-accent) 100%) !important;
+    }
+
+    /* Paginación reubicada a la izquierda */
+    .reveal .slide-number {
+      font-family: 'JetBrains Mono', monospace !important;
+      background: rgba(255, 255, 255, 0.95) !important;
+      backdrop-filter: blur(8px);
+      color: var(--blue-deep) !important;
+      border: 1.5px solid #BFDBFE !important;
+      border-radius: 20px !important;
+      font-size: 0.78rem !important;
+      font-weight: 700 !important;
+      padding: 6px 14px !important;
+      bottom: 18px !important;
+      left: 24px !important;
+      right: auto !important;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
+      z-index: 50 !important;
+    }
+
+    .text-orange { color: var(--orange-accent); }
+    .text-blue { color: var(--blue-tech); }
+    .text-green { color: var(--green); }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body>
+
+  <!-- Barra Superior Académica -->
+  <div class="top-academic-bar">
+    <div class="top-academic-pill">
+      🎓 Seminario de Sistemas 1 • 2026 - 2S • <strong>Facultad de Ingeniería</strong>
+    </div>
+    <div class="top-academic-pill">
+      Profesor: <strong>Ing. Mario Ramírez Tobar</strong> | Módulo: <strong>Virtualización & Grid Computing</strong>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- =====================================================================
+           BLOQUE 0: APERTURA & EL PROBLEMA DE PARTIDA (3 Diapositivas)
+           ===================================================================== -->
+      <section>
+        
+        <!-- Diapositiva 1 (0.1) Portada Principal -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="title-slide-container">
+              <div class="title-hero">
+                <div>
+                  <div class="title-badge-top">
+                    <span>Seminario de Sistemas 1 • 2026 - 2S</span>
+                    <span style="color:#CBD5E1">•</span>
+                    <span style="color:var(--orange-accent)">Infraestructura y Arquitectura</span>
+                  </div>
+                  <h1 class="title-main">Virtualización y<br>Grid Computing</h1>
+                  <p class="title-sub">
+                    Cómo engañar al software para multiplicar servidores y cómo unir miles de computadoras para resolver problemas gigantescos
+                  </p>
+                </div>
+                <div class="title-author">
+                  Docente: Ing. Mario Ramírez Tobar
+                  <span>Facultad de Ingeniería • 4to Año de Ingeniería en Sistemas • Universidad</span>
+                </div>
+              </div>
+
+              <div class="title-sidebar">
+                <div class="bento-card bento-hero" style="flex: 1;">
+                  <span class="card-badge">¿Por qué importa hoy?</span>
+                  <div class="card-title">El Sustrato Invisible</div>
+                  <ul class="card-points">
+                    <li><strong>Sostiene a la Nube:</strong> AWS, Azure y Google Cloud no existirían sin virtualización.</li>
+                    <li><strong>Aísla Sistemas Críticos:</strong> Permite que el ERP, el CRM y el motor BPM corran en el mismo hardware sin molestarse.</li>
+                  </ul>
+                  <div class="card-highlight">📌 Del silicio físico a la infraestructura elástica</div>
+                </div>
+
+                <div class="bento-card bento-card-orange" style="flex: 1;">
+                  <span class="card-badge card-badge-orange">Dinámica de Clase</span>
+                  <div class="card-title">Práctica en Vivo</div>
+                  <ul class="card-points card-points-orange">
+                    <li><strong>25 Diapositivas Clave:</strong> Conceptos directos sin saturación teórica innecesaria.</li>
+                    <li><strong>3 Simuladores Táctiles:</strong> Manipularemos servidores, fallos y tareas en vivo desde la tablet.</li>
+                  </ul>
+                  <div class="card-highlight card-highlight-orange">⚡ Enfoque aplicado para futuros ingenieros</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 1 de 25 • Introducción</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 1]:
+            "Buenas tardes a todos. Bienvenidos a la sesión de Virtualización y Grid Computing.
+            En clases pasadas diseñamos procesos con BPMN, hablamos de ERPs empresariales, arquitecturas SOA y Cloud Computing.
+            Hoy vamos a entender el motor que hace posible todo eso: ¿cómo hacemos para que una sola máquina física se convierta en 20 servidores independientes? Y por el otro lado, ¿cómo unimos 10,000 computadoras normales para que trabajen juntas como una supercomputadora?
+            Tengo preparados dos simuladores interactivos que iremos tocando en la pantalla para ver estos fenómenos en vivo."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 2 (0.2) El Problema de Partida: Servidores Subutilizados -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                El Problema de Partida <span class="badge-pill">La Crisis del Hardware Físico</span>
+                <span class="badge-orange">¿Por qué nació la Virtualización?</span>
+              </div>
+              <div class="slide-title">El Dilema: Servidores al 10% de Uso y Facturas Millonarias</div>
+              <div class="slide-subtitle">La paradoja de comprar computadoras gigantescas que pasan el 90% del tiempo durmiendo</div>
+            </div>
+
+            <div class="bento-grid grid-hero-split">
+              <div class="bento-card bento-hero">
+                <span class="card-badge">El Modelo Tradicional (Años 90)</span>
+                <div class="card-title">1 Servidor Físico = 1 Aplicación</div>
+                <p style="font-size:0.86rem; line-height:1.45; color:var(--text-body);">
+                  Antes de la virtualización, las empresas aplicaban una regla estricta: <em>"Una aplicación por máquina"</em> para evitar que un fallo en un sistema tirara los demás.
+                </p>
+                <div class="analogy-box">
+                  <strong>La Metáfora de la Flota de Camiones:</strong><br>
+                  Imagina que una empresa compra un camión de 10 toneladas para llevar una carta, otro camión para llevar un paquete pequeño y otro para una caja. Todos gastan gasolina, chofer y estacionamiento, pero van casi vacíos.
+                </div>
+                <div class="card-highlight">❌ Desperdicio masivo: El CPU promedio operaba al 8% - 15%</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">El Dolor Financiero</span>
+                <div class="card-title">Espacio, Luz y Clima</div>
+                <ul class="card-points">
+                  <li><strong>Electricidad Constante:</strong> Un servidor consume casi la misma energía estando ocioso que trabajando al 100%.</li>
+                  <li><strong>Aire Acondicionado:</strong> Cuartos fríos enormes para enfriar silicio que no hacía nada productivo.</li>
+                </ul>
+                <div class="card-highlight">💸 Altos costos de capital (CAPEX)</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">La Solución Ingenieril</span>
+                <div class="card-title">La Promesa de la Virtualización</div>
+                <ul class="card-points">
+                  <li><strong>Consolidación:</strong> Meter 15 o 20 servidores virtuales dentro de una sola máquina física potente.</li>
+                  <li><strong>Aprovechamiento:</strong> Subir el uso del procesador del 10% al 70% sin perder aislamiento ni seguridad.</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">📉 Reducción del 80% en costos de hardware</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 2 de 25 • El Problema de Partida</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 2]:
+            "Pregúntenle a los alumnos: 'Si ustedes compran una laptop de $1,500 dólares solo para escribir en Word, ¿están aprovechando el procesador?'.
+            Eso mismo le pasaba a los bancos y hospitales en los años 90. Compraban un servidor Dell de $10,000 dólares para el correo, otro para la base de datos y otro para la web.
+            Cada servidor usaba el 10% del CPU. El 90% restante se convertía en calor y recibo de luz.
+            La virtualización nació de una necesidad económica urgente: ¿cómo metemos 20 servidores en una sola máquina sin que se peleen entre ellos?".
+          </aside>
+        </section>
+
+        <!-- Diapositiva 3 (0.3) Hoja de Ruta de la Clase -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Mapa de la Sesión <span class="badge-pill">4 Ejes de Aprendizaje</span>
+                <span class="badge-orange">Estructura Didáctica</span>
+              </div>
+              <div class="slide-title">Hoja de Ruta: El Camino de la Infraestructura Moderna</div>
+              <div class="slide-subtitle">Los 4 bloques que recorreremos paso a paso en la clase de hoy</div>
+            </div>
+
+            <div class="bento-grid grid-quad">
+              <div class="bento-card bento-hero">
+                <div class="stat-badge">01</div>
+                <div class="card-title">Fundamentos de Virtualización</div>
+                <ul class="card-points">
+                  <li>¿Qué es y cómo funciona el engaño al sistema operativo?</li>
+                  <li>Hipervisores Tipo 1 (KVM/ESXi) vs Tipo 2 (VirtualBox).</li>
+                  <li>Diferencia clara: Máquinas Virtuales vs Contenedores (Docker).</li>
+                </ul>
+                <div class="card-highlight">⏱ Bloque 1: Las bases del engaño</div>
+              </div>
+
+              <div class="bento-card">
+                <div class="stat-badge">02</div>
+                <div class="card-title">Mecánica Interna & Simulador 1</div>
+                <ul class="card-points">
+                  <li>Cómo se comparte la memoria RAM y el CPU.</li>
+                  <li>El problema del <em>Vecino Ruidoso</em> (Noisy Neighbor).</li>
+                  <li><strong>Laboratorio en Vivo:</strong> Simulador táctil de sobreasignación y Live Migration.</li>
+                </ul>
+                <div class="card-highlight">⏱ Bloque 2: Práctica interactiva</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <div class="stat-badge stat-badge-orange">03</div>
+                <div class="card-title">Grid Computing & Simulador 2</div>
+                <ul class="card-points">
+                  <li>La metáfora de la red eléctrica (Foster & Kesselman).</li>
+                  <li>Compartir ciclos ociosos (SETI@home y LHC del CERN).</li>
+                  <li><strong>Laboratorio en Vivo:</strong> Simulador táctil de asignación de tareas (Matchmaking).</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">⏱ Bloque 3: Mallas distribuidas</div>
+              </div>
+
+              <div class="bento-card">
+                <div class="stat-badge">04</div>
+                <div class="card-title">Proyectos, Costos & Síntesis</div>
+                <ul class="card-points">
+                  <li>Cómo la unión de Grid + Virtualización creó Cloud Computing.</li>
+                  <li><strong>Calculadora Interactiva:</strong> Dimensionamiento y ahorro en dólares.</li>
+                  <li>Checklist del Ingeniero: ¿Cuándo usar cada tecnología?</li>
+                </ul>
+                <div class="card-highlight">⏱ Bloque 4: Toma de decisiones</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 3 de 25 • Hoja de Ruta</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 3]:
+            "Aquí les muestro nuestro mapa de vuelo para hoy:
+            1. Primero entenderemos qué es virtualizar y la diferencia con Docker.
+            2. Luego tocaremos el primer simulador en la tablet para ver cómo se mueven las máquinas en vivo sin apagarse.
+            3. En la segunda mitad veremos el Grid: cómo unir computadoras de universidades y laboratorios por Internet.
+            4. Y terminaremos con la calculadora de proyectos: si un gerente les pide virtualizar la empresa, sabrán exactamente cuántos servidores comprar y cuánto dinero van a ahorrar."
+          </aside>
+        </section>
+
+      </section>
+
+      <!-- =====================================================================
+           BLOQUE 1: FUNDAMENTOS DE VIRTUALIZACIÓN (5 Diapositivas)
+           ===================================================================== -->
+      <section>
+
+        <!-- Diapositiva 4 (1.1) ¿Qué es realmente la Virtualización? -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Fundamentos <span class="badge-pill">Concepto Esencial</span>
+              </div>
+              <div class="slide-title">¿Qué es la Virtualización? La Ilusión del Hardware Exclusivo</div>
+              <div class="slide-subtitle">Una capa de software inteligente que hace creer a cada sistema que es dueño absoluto de la máquina</div>
+            </div>
+
+            <div class="bento-grid grid-hero-split">
+              <div class="bento-card bento-hero">
+                <span class="card-badge">La Definición Sencilla</span>
+                <div class="card-title">Abstracción Total de Recursos</div>
+                <p style="font-size:0.86rem; line-height:1.45; color:var(--text-body);">
+                  Virtualizar es interponer una capa llamada <strong>Hipervisor (o VMM)</strong> entre el silicio real y los sistemas operativos invitados.
+                </p>
+                <div class="analogy-box">
+                  <strong>La Metáfora del Edificio de Apartamentos:</strong><br>
+                  El hardware físico es el terreno y las tuberías del edificio. Cada máquina virtual es un apartamento privado. Los inquilinos creen que tienen su propia casa con su propia puerta y cocina, pero todos comparten los cimientos y el suministro de agua administrados por el conserje (el hipervisor).
+                </div>
+                <div class="card-highlight">🏢 Cada VM tiene su propio Windows o Linux sin enterarse de las demás</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">Propiedad 1</span>
+                <div class="card-title">Aislamiento Total</div>
+                <ul class="card-points">
+                  <li>Si la Máquina Virtual A sufre un pantallazo azul o es infectada por un virus, la Máquina Virtual B sigue funcionando al 100%.</li>
+                  <li>No hay fuga de datos entre inquilinos.</li>
+                </ul>
+                <div class="card-highlight">🛡 Seguridad por contención física</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">Propiedad 2</span>
+                <div class="card-title">Hardware como Archivo</div>
+                <ul class="card-points">
+                  <li>Un servidor entero (disco, memoria y configuración) es simplemente un archivo (ej. <code>.vmdk</code> o <code>.qcow2</code>).</li>
+                  <li>Se puede clonar, pausar, respaldar o copiar a una USB en minutos.</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">💾 Adiós a reinstalar sistemas durante días</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 4 de 25 • ¿Qué es la Virtualización?</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 4]:
+            "Expliquen esta analogía a los alumnos:
+            Antes, cada empresa construía una casa por cada persona que contrataba. Una casa para el contador, una casa para el vendedor.
+            La virtualización es construir un edificio de apartamentos. Todos comparten el mismo terreno y las mismas tuberías (procesador, RAM y disco), pero cada quien cierra su puerta con llave.
+            Lo más impresionante: una máquina virtual es solo un archivo en el disco duro. Si el servidor físico empieza a echar humo, copiamos el archivo a otra máquina y la encendemos. Eso antes tomaba semanas de comprar partes y reinstalar."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 5 (1.2) El Teorema de Popek y Goldberg en Fácil -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Teoría Universitaria <span class="badge-pill">Popek & Goldberg (1974)</span>
+                <span class="badge-orange">Las Reglas del Juego</span>
+              </div>
+              <div class="slide-title">El Teorema de Popek y Goldberg: ¿Cómo Atrapar al Sistema?</div>
+              <div class="slide-subtitle">Las 3 condiciones indispensables para que una computadora pueda ser virtualizada</div>
+            </div>
+
+            <div class="bento-grid grid-triptych">
+              <div class="bento-card bento-hero">
+                <span class="card-badge">Regla 1: Fidelidad</span>
+                <div class="card-title">Fidelidad (Equivalencia)</div>
+                <div style="font-size:0.83rem; line-height:1.45; color:var(--text-body);">
+                  El software que corre dentro de la máquina virtual no debe notar ninguna diferencia con un servidor de verdad.
+                </div>
+                <ul class="card-points" style="margin-top:8px;">
+                  <li>Un programa compilado para Windows o Linux debe arrojar <strong>exactamente los mismos resultados</strong>.</li>
+                  <li>Si una suma da 4 en el procesador físico, debe dar 4 en la máquina virtual.</li>
+                </ul>
+                <div class="card-highlight">🎯 Cero alteraciones en el código</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">Regla 2: Aislamiento</span>
+                <div class="card-title">Control de Recursos (Seguridad)</div>
+                <div style="font-size:0.83rem; line-height:1.45; color:var(--text-body);">
+                  El hipervisor tiene la última palabra sobre todo el hardware.
+                </div>
+                <ul class="card-points" style="margin-top:8px;">
+                  <li>Ninguna máquina virtual puede tomar el control de la memoria de otra ni tocar la tarjeta madre directamente.</li>
+                  <li>El sistema operativo invitado es un 'prisionero consentido'.</li>
+                </ul>
+                <div class="card-highlight">🔒 El árbitro manda sobre el partido</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">Regla 3: Rendimiento</span>
+                <div class="card-title">Eficiencia (Atrapar y Emular)</div>
+                <div style="font-size:0.83rem; line-height:1.45; color:var(--text-body);">
+                  El 99% de las operaciones normales (sumas, lógicas, bucles) corren <strong>directo en el chip real a toda velocidad</strong>.
+                </div>
+                <ul class="card-points" style="margin-top:8px;">
+                  <li><strong>Trap-and-Emulate:</strong> Solo cuando la VM intenta hacer algo peligroso (como apagar la máquina), el procesador frena la acción (TRAP) y el hipervisor la simula.</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">⚡ Velocidad nativa sin emulación pesada</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 5 de 25 • Teorema de Popek & Goldberg</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 5]:
+            "En 1974, dos científicos llamados Popek y Goldberg escribieron el teorema que define la virtualización moderna.
+            No se compliquen con la matemática; apréndanse estas 3 palabras:
+            1. Fidelidad: el programa corre idéntico, no sabe que está en una máquina virtual.
+            2. Control: el hipervisor manda; nadie puede escapar de su cárcel de memoria.
+            3. Eficiencia: no emulamos el procesador con software lento. Las sumas y multiplicaciones van directo al silicio de Intel o AMD. Solo intervenimos cuando la VM intenta tocar los registros maestros del procesador."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 6 (1.3) El Reto x86 y la llegada de Intel VT-x -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Evolución del Hardware <span class="badge-pill">Intel & AMD</span>
+                <span class="badge-orange">El Agujero Resuelto</span>
+              </div>
+              <div class="slide-title">La Batalla de x86: De la Traducción Binaria a Intel VT-x</div>
+              <div class="slide-subtitle">Por qué las PCs normales no podían virtualizar en los años 90 y cómo el silicio lo solucionó</div>
+            </div>
+
+            <div class="bento-grid grid-hero-split">
+              <div class="bento-card bento-hero">
+                <span class="card-badge">El Problema de x86</span>
+                <div class="card-title">Las 17 Instrucciones Tramposas</div>
+                <p style="font-size:0.85rem; line-height:1.45; color:var(--text-body);">
+                  Durante años, los procesadores x86 (Intel Pentium) tenían un defecto de fábrica: 17 instrucciones críticas fallaban <em>en silencio</em> sin avisarle al hipervisor cuando alguien intentaba virtualizar.
+                </p>
+                <div class="analogy-box">
+                  <strong>El Semáforo sin Cámara:</strong><br>
+                  Si pasas un semáforo en rojo y no hay cámara ni policía, nadie se entera. Las computadoras viejas ignoraban ciertas órdenes peligrosas sin generar el freno (TRAP) que el hipervisor necesitaba para gobernar.
+                </div>
+                <div class="card-highlight">⚠️ Por 20 años se creyó imposible virtualizar x86 eficientemente</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">La Hazaña de VMware (1998)</span>
+                <div class="card-title">Traducción Binaria al Vuelo</div>
+                <ul class="card-points">
+                  <li>VMware inventó un traductor en tiempo real: leía el código de la VM y cambiaba las 17 instrucciones tramposas por código seguro antes de que llegaran al CPU.</li>
+                  <li>Funcionó, pero requería un compilador complejo.</li>
+                </ul>
+                <div class="card-highlight">💡 Una obra de arte de la ingeniería de software</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">La Solución Definitiva (2005)</span>
+                <div class="card-title">Intel VT-x & AMD-V en el Silicio</div>
+                <ul class="card-points">
+                  <li>Intel y AMD agregaron un interruptor de hardware al procesador: <strong>Modo Root</strong> (para el hipervisor) y <strong>Modo Non-Root</strong> (para la VM).</li>
+                  <li>Hoy cualquier laptop o tablet virtualiza de forma nativa por hardware.</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">🚀 Nacimiento formal de la Nube moderna</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 6 de 25 • Evolución de x86 y VT-x</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 6]:
+            "Esta historia les encanta a los estudiantes:
+            En los 90, los mainframes millonarios de IBM podían virtualizar perfecto, pero las PCs normales con procesadores Intel no podían.
+            Tenían 17 instrucciones que fallaban en silencio.
+            En 1998, unos genios fundaron VMware y crearon un truco de software: traducían esas 17 instrucciones en milisegundos. Se volvieron multimillonarios.
+            En 2005, Intel y AMD dijeron: 'Vamos a arreglar el chip'. Agregaron las instrucciones Intel VT-x y AMD-V. Desde ese día, la virtualización es nativa y súper veloz en cualquier computadora."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 7 (1.4) Tipos de Hipervisores: Tipo 1 vs Tipo 2 -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Taxonomía Práctica <span class="badge-pill">Tipos de Hipervisores</span>
+                <span class="badge-orange">Arquitectura de Servidores</span>
+              </div>
+              <div class="slide-title">Hipervisores Tipo 1 (Bare-Metal) vs Tipo 2 (Hosted)</div>
+              <div class="slide-subtitle">La diferencia entre controlar el hierro directamente o pedirle permiso a Windows</div>
+            </div>
+
+            <div class="bento-grid grid-hero-split">
+              <div class="bento-card bento-hero">
+                <span class="card-badge">Tipo 1: Bare-Metal (Sobre el Silicio)</span>
+                <div class="card-title">El Hipervisor ES el Sistema Operativo</div>
+                <p style="font-size:0.85rem; line-height:1.45; color:var(--text-body);">
+                  Se instala directamente en el disco duro del servidor vacío. No hay un Windows o Linux de escritorio estorbando en medio.
+                </p>
+                <ul class="card-points">
+                  <li><strong>Rendimiento Máximo:</strong> Acceso directo a tarjetas de red de 25 Gbps y discos NVMe.</li>
+                  <li><strong>Estabilidad Extrema:</strong> Menos código = Menos probabilidad de fallas y reinicios.</li>
+                  <li><strong>Líderes de la Industria:</strong> VMware ESXi, Linux KVM (Proxmox), Microsoft Hyper-V.</li>
+                </ul>
+                <div class="card-highlight">🏢 El estándar obligatorio para Data Centers y la Nube</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">Tipo 2: Hosted (Alojado)</span>
+                <div class="card-title">Una Aplicación sobre tu SO Actual</div>
+                <ul class="card-points">
+                  <li>El hipervisor corre como un programa cualquiera (como Spotify o Word) encima de tu Windows 11 o macOS.</li>
+                  <li><strong>Doble Sobrecarga:</strong> Si tu Windows principal se congela o se reinicia por una actualización, todas las VMs mueren.</li>
+                  <li><strong>Ejemplos:</strong> Oracle VirtualBox, VMware Workstation.</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">💻 Ideal para tareas de laboratorio y desarrollo estudiantil</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">Decisión Profesional</span>
+                <div class="card-title">Regla para Proyectos</div>
+                <ul class="card-points">
+                  <li><strong>En clase / laboratorio:</strong> Usamos Tipo 2 (VirtualBox) por comodidad en sus laptops.</li>
+                  <li><strong>En una empresa real:</strong> Jamás pongan VirtualBox en un servidor de producción. Usen siempre Tipo 1 (KVM o ESXi).</li>
+                </ul>
+                <div class="card-highlight">⚖️ Criterio de arquitectura indispensable</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 7 de 25 • Hipervisores Tipo 1 vs Tipo 2</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 7]:
+            "Diferencia muy clara para no equivocarse en el examen ni en el trabajo:
+            - Tipo 2 es lo que ellos usan en su laptop: tienen Windows 11, instalan VirtualBox y adentro montan un Linux. Es genial para estudiar, pero ineficiente para una empresa.
+            - Tipo 1 es cuando compras un servidor físico Dell, borras todo, e instalas directamente VMware ESXi o Proxmox/KVM. El hipervisor es el dueño del fierro. No hay interfaz de escritorio consumiendo memoria. Toda la máquina se dedica a las máquinas virtuales."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 8 (1.5) Máquinas Virtuales vs Contenedores (Docker) -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Comparativa Clave <span class="badge-pill">Fronteras de Aislamiento</span>
+                <span class="badge-orange">Arquitectura de Software</span>
+              </div>
+              <div class="slide-title">Máquinas Virtuales vs Contenedores (Docker): ¿Cuál es Mejor?</div>
+              <div class="slide-subtitle">Entendiendo la diferencia entre aislar hardware completo o aislar procesos en el kernel</div>
+            </div>
+
+            <div class="bento-grid grid-quad">
+              <div class="bento-card bento-hero">
+                <span class="card-badge">Máquinas Virtuales (VMs)</span>
+                <div class="card-title">Casa Propia con Cimientos</div>
+                <ul class="card-points">
+                  <li><strong>Hardware Simulado:</strong> Cada VM tiene su propio BIOS virtual, tarjeta de red y su propio kernel de sistema operativo.</li>
+                  <li><strong>Aislamiento Fuerte:</strong> Si un hacker rompe el Linux de una VM, está atrapado en esa máquina. No puede ver a los vecinos.</li>
+                  <li><strong>Costo:</strong> Tarda 15-30 segundos en prender y consume 1 a 2 GB de RAM base.</li>
+                </ul>
+                <div class="card-highlight">🛡 Máxima Seguridad y Aislamiento</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">Contenedores (Docker)</span>
+                <div class="card-title">Habitaciones en un Hotel</div>
+                <ul class="card-points">
+                  <li><strong>Comparten el Kernel:</strong> No simulan hardware ni cargan otro sistema operativo; solo aíslan carpetas y procesos (namespaces y cgroups).</li>
+                  <li><strong>Velocidad Extrema:</strong> Arranca en 0.2 segundos y pesa pocos megabytes.</li>
+                  <li><strong>Riesgo:</strong> Si hay una falla grave en el kernel de Linux compartido, todos los contenedores pueden sufrir.</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">⚡ Agilidad y Despliegue Rápido</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">¿Cuándo elegir Máquinas Virtuales?</span>
+                <div class="card-title">Casos Recomendados</div>
+                <ul class="card-points">
+                  <li>Para el ERP central (SAP HANA) o bases de datos bancarias.</li>
+                  <li>Cuando necesitas correr sistemas distintos (Windows Server y Linux juntos).</li>
+                  <li>Servicios multi-empresa donde la seguridad es crítica.</li>
+                </ul>
+                <div class="card-highlight">🏢 Aplicaciones Monolíticas y Core Bancario</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">¿Cuándo elegir Contenedores?</span>
+                <div class="card-title">Casos Recomendados</div>
+                <ul class="card-points">
+                  <li>Microservicios y APIs REST (lo visto en la clase de SOA).</li>
+                  <li>Aplicaciones web que necesitan escalar de 2 a 100 réplicas durante una promoción de ventas.</li>
+                  <li>Pipelines de integración continua (CI/CD).</li>
+                </ul>
+                <div class="card-highlight">🚀 Microservicios y Alta Elasticidad</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 8 de 25 • VMs vs Contenedores</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 8]:
+            "Esta es la pregunta del millón en entrevistas de trabajo: '¿Docker reemplaza a las máquinas virtuales?'.
+            Respuesta contundente: NO. Son tecnologías hermanas y complementarias.
+            - Las VMs son casas independientes: seguras, sólidas, pesadas.
+            - Los contenedores son cuartos de hotel: entras en 1 segundo, compartes el pasillo y el agua con los demás.
+            En la nube real (AWS o Azure), los contenedores de Docker corren DENTRO de máquinas virtuales para tener la agilidad de Docker con la muralla de seguridad de la VM."
+          </aside>
+        </section>
+
+      </section>
+
+      <!-- =====================================================================
+           BLOQUE 2: MECÁNICA PRÁCTICA DEL HIPERVISOR (4 Diapositivas)
+           ===================================================================== -->
+      <section>
+
+        <!-- Diapositiva 9 (2.1) La Magia de la Memoria: Sobreasignación y Ballooning -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Mecánica Interna <span class="badge-pill">Gestión Inteligente de RAM</span>
+                <span class="badge-orange">Memory Overcommit</span>
+              </div>
+              <div class="slide-title">La Magia de la Memoria: ¿Cómo Prometer más RAM de la que Tienes?</div>
+              <div class="slide-subtitle">El arte de la sobreasignación y el truco del 'globo' (Memory Ballooning)</div>
+            </div>
+
+            <div class="bento-grid grid-hero-split">
+              <div class="bento-card bento-hero">
+                <span class="card-badge">El Concepto de Overcommit</span>
+                <div class="card-title">Sobrevender como las Aerolíneas</div>
+                <p style="font-size:0.85rem; line-height:1.45; color:var(--text-body);">
+                  Si tienes un servidor físico con <strong>64 GB de RAM</strong>, ¿puedes encender 4 máquinas virtuales y asignarles <strong>32 GB a cada una</strong> (128 GB en total)?
+                </p>
+                <div class="analogy-box">
+                  <strong>Sí, porque casi nadie usa el 100% todo el tiempo:</strong><br>
+                  Al igual que una aerolínea sobrevende boletos sabiendo que algunos pasajeros no llegan, el hipervisor asigna RAM real solo cuando la VM escribe activamente en ella.
+                </div>
+                <div class="card-highlight">💾 Se puede duplicar la capacidad aparente del servidor</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">El Mecanismo de Rescate</span>
+                <div class="card-title">Memory Ballooning (El Globo)</div>
+                <ul class="card-points">
+                  <li>Dentro de la VM se instala un pequeño programa llamado <em>globo</em>.</li>
+                  <li>Cuando el servidor físico se está quedando sin memoria, le ordena al globo que se <strong>infle</strong> dentro de una VM ociosa.</li>
+                  <li>Al inflarse, el globo acapara memoria vacía de la VM y se la entrega al hipervisor para salvar a las demás.</li>
+                </ul>
+                <div class="card-highlight">🎈 Reclamación suave y cooperativa de memoria</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">El Riesgo Grave</span>
+                <div class="card-title">¿Qué pasa si todas piden RAM al mismo tiempo?</div>
+                <ul class="card-points">
+                  <li>Si la memoria física real se agota por completo, el hipervisor entra en pánico y empieza a mandar datos al disco duro (<em>swapping</em>).</li>
+                  <li>El sistema se vuelve 1,000 veces más lento y las aplicaciones fallan.</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">⚠️ Regla: Las bases de datos críticas deben tener RAM 100% reservada</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 9 de 25 • Sobreasignación y Ballooning</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 9]:
+            "Aquí explicamos un concepto de administración pura:
+            ¿Cómo hacen los proveedores de hosting para venderte un VPS barato?
+            Hacen 'overcommit'. Si tienen 64 GB de RAM, venden 120 GB en total.
+            Saben que un servidor web usa 2 GB en la noche y 6 GB en el día.
+            Pero, ¿qué pasa si todos se llenan? Para eso inventaron el 'Ballooning':
+            Un programita que se infla como un globo dentro de una máquina que no esté haciendo nada. Al inflarse, le roba RAM a esa máquina y se la da a la que está en apuros.
+            Moraleja para proyectos: a una base de datos gigante (Oracle o SAP) NUNCA se le hace overcommit; se le reserva el 100%."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 10 (2.2) El Fenómeno del Vecino Ruidoso (Noisy Neighbor) -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Problemas de Rendimiento <span class="badge-pill">Contención de Recursos</span>
+                <span class="badge-orange">El Vecino Ruidoso</span>
+              </div>
+              <div class="slide-title">El Efecto 'Vecino Ruidoso' (Noisy Neighbor) y el Robo de CPU</div>
+              <div class="slide-subtitle">Cuando una aplicación descontrolada arruina el rendimiento de las demás máquinas del servidor</div>
+            </div>
+
+            <div class="bento-grid grid-triptych">
+              <div class="bento-card bento-hero">
+                <span class="card-badge">El Problema</span>
+                <div class="card-title">¿Quién es el Vecino Ruidoso?</div>
+                <div style="font-size:0.83rem; line-height:1.45; color:var(--text-body);">
+                  Imagina que vives en un edificio muy tranquilo y de pronto tu vecino de al lado pone una fiesta con música a todo volumen a las 3:00 AM.
+                </div>
+                <ul class="card-points" style="margin-top:8px;">
+                  <li>En un servidor virtualizado, si una máquina secundaria se vuelve loca (un reporte batch mal programado o un ataque DDoS), satura el CPU y el disco del servidor físico.</li>
+                  <li>Las otras máquinas empiezan a responder lento sin tener la culpa.</li>
+                </ul>
+                <div class="card-highlight">🔊 Contención involuntaria entre inquilinos</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">La Métrica</span>
+                <div class="card-title">CPU Steal Time (%st)</div>
+                <div style="font-size:0.83rem; line-height:1.45; color:var(--text-body);">
+                  En Linux, si ejecutas el comando <code>top</code> verás una métrica llamada <strong>%st</strong>:
+                </div>
+                <ul class="card-points" style="margin-top:8px;">
+                  <li>Representa el porcentaje de tiempo que tu máquina virtual <strong>quería procesar datos</strong> pero el hipervisor la hizo esperar porque estaba atendiendo a otra máquina.</li>
+                  <li>Si <code>%st</code> supera el 5%, tus usuarios empezarán a quejarse de lentitud.</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">⏱ Tiempo robado por la máquina vecina</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">La Solución</span>
+                <div class="card-title">Límites y Migración en Caliente</div>
+                <ul class="card-points">
+                  <li><strong>Cuotas (Limits):</strong> Ponerle un techo estricto al vecino ruidoso para que nunca use más del 40% del procesador físico.</li>
+                  <li><strong>Aislamiento (CPU Pinning):</strong> Asignarle núcleos exclusivos a la base de datos principal.</li>
+                  <li><strong>Mudarlo:</strong> Tomar la máquina y enviarla a otro servidor físico con baja carga (Live Migration).</li>
+                </ul>
+                <div class="card-highlight">🛡 Restablecimiento del orden en el Data Center</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 10 de 25 • El Vecino Ruidoso</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 10]:
+            "Este concepto es fundamental para cualquier administrador de sistemas:
+            El 'Noisy Neighbor'.
+            Tú tienes tu tienda web en una máquina virtual y de repente se pone lentísima. Revisas el CPU de tu tienda y está al 10%. Dices: '¿Por qué está lenta si no estoy saturado?'.
+            Revisas la métrica '%st' (CPU Steal) y está en 30%.
+            Significa que en el mismo fierro físico hay otra máquina de otra persona minando criptomonedas o corriendo un reporte gigante que acapara el procesador.
+            Enseguida veremos en el simulador cómo resolver esto mudando la máquina a otro servidor en caliente."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 11 (2.3) Live Migration: Mudar una máquina sin apagarla -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Alta Disponibilidad <span class="badge-pill">Cero Caída</span>
+                <span class="badge-orange">Live Migration</span>
+              </div>
+              <div class="slide-title">Live Migration: Mudar un Servidor en Vivo sin Apagarlo</div>
+              <div class="slide-subtitle">Cómo transferir una máquina activa de un servidor físico a otro en menos de 50 milisegundos</div>
+            </div>
+
+            <div class="bento-grid grid-banner-duo">
+              <div class="bento-card bento-hero bento-banner">
+                <div class="card-title" style="margin-bottom: 4px;">El Milagro de Mudar la Memoria por la Red</div>
+                <p style="font-size:0.85rem; line-height:1.45; color:var(--text-body);">
+                  Imagina que necesitas reparar el motor de un avión en pleno vuelo y logras pasar los pasajeros y el equipaje a otro avión volando al lado sin que nadie derrame su café. Eso es <strong>Live Migration</strong>:
+                </p>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:8px;">
+                  <div style="background:white; border:1px solid #BFDBFE; border-radius:8px; padding:10px;">
+                    <strong style="color:var(--blue-tech); font-size:0.8rem;">Paso 1: Copia Inicial</strong>
+                    <div style="font-size:0.75rem; color:var(--text-body); margin-top:4px;">
+                      Transfiere toda la RAM del Servidor A al Servidor B mientras la máquina virtual sigue atendiendo clientes normalmente.
+                    </div>
+                  </div>
+                  <div style="background:white; border:1px solid #BFDBFE; border-radius:8px; padding:10px;">
+                    <strong style="color:var(--blue-tech); font-size:0.8rem;">Paso 2: Páginas Sucias</strong>
+                    <div style="font-size:0.75rem; color:var(--text-body); margin-top:4px;">
+                      Copia solo los pedacitos de memoria que cambiaron durante el paso 1. Cada ronda es más rápida que la anterior.
+                    </div>
+                  </div>
+                  <div style="background:white; border:1.5px solid var(--border-orange); border-radius:8px; padding:10px;">
+                    <strong style="color:var(--orange-accent); font-size:0.8rem;">Paso 3: El Salto Final</strong>
+                    <div style="font-size:0.75rem; color:var(--text-body); margin-top:4px;">
+                      Pausa la VM por apenas <strong>30 milisegundos</strong>, pasa los registros finales y despierta en el Servidor B. Ningún usuario se desconecta.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">El Secreto</span>
+                <div class="card-title">El Almacenamiento Compartido</div>
+                <ul class="card-points">
+                  <li><strong>El disco no se mueve:</strong> El disco duro virtual reside en un almacenamiento centralizado (SAN o NAS).</li>
+                  <li>Solo viaja por el cable de red la memoria RAM y el estado del procesador.</li>
+                </ul>
+                <div class="card-highlight">💾 Solo se transfiere la memoria viva</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">El Beneficio Empresarial</span>
+                <div class="card-title">Mantenimiento con Cero Downtime</div>
+                <ul class="card-points">
+                  <li>¿Hay que apagar el servidor físico para cambiarle una fuente de poder?</li>
+                  <li>Se migran todas las VMs a otros servidores del rack en 2 minutos y se apaga el equipo sin interrumpir operaciones.</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">🛡 99.999% de disponibilidad garantizada</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 11 de 25 • Live Migration</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 11]:
+            "Expliquen esta maravilla técnica:
+            Antes, para darle mantenimiento a un servidor físico, había que programar una ventana el domingo a las 2:00 AM y tumbar el sistema 4 horas.
+            Con Live Migration, mudas una máquina virtual entera de un servidor a otro mientras los usuarios están cobrando con tarjeta de crédito.
+            El tiempo de congelamiento es de 30 milisegundos. Para el protocolo de red TCP, 30 milisegundos es un pestañeo imperceptible.
+            En la siguiente diapositiva tocaremos el botón en la tablet para ver exactamente esta migración en acción."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 12 (2.4) Cómo se ve una VM en Código (libvirt XML) -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Enfoque Práctico <span class="badge-pill">Código de Configuración</span>
+                <span class="badge-orange">KVM / libvirt XML</span>
+              </div>
+              <div class="slide-title">Anatomía de una VM: ¿Cómo se ve en la Vida Real?</div>
+              <div class="slide-subtitle">Desmitificando el archivo de texto que describe un servidor virtual de producción</div>
+            </div>
+
+            <div class="bento-grid grid-hero-split">
+              <div class="bento-card" style="padding:10px;">
+                <pre class="code-card"><code class="language-xml">&lt;!-- Definición sencilla de una Máquina Virtual en KVM --&gt;
+&lt;domain type='kvm'&gt;
+  &lt;name&gt;servidor-web-empresa&lt;/name&gt;
+  
+  &lt;!-- 1. ¿Cuántos núcleos de procesador le damos? --&gt;
+  &lt;vcpu placement='static'&gt;4&lt;/vcpu&gt;
+
+  &lt;!-- 2. ¿Cuánta memoria RAM física le asignamos? --&gt;
+  &lt;memory unit='GiB'&gt;16&lt;/memory&gt;
+
+  &lt;devices&gt;
+    &lt;!-- 3. ¿Dónde está su disco duro virtual? --&gt;
+    &lt;disk type='file' device='disk'&gt;
+      &lt;driver name='qemu' type='qcow2'/&gt;
+      &lt;source file='/var/lib/libvirt/images/disco-web.qcow2'/&gt;
+      &lt;target dev='vda' bus='virtio'/&gt;
+    &lt;/disk&gt;
+
+    &lt;!-- 4. ¿A qué tarjeta de red se conecta? --&gt;
+    &lt;interface type='bridge'&gt;
+      &lt;source bridge='br0'/&gt;
+      &lt;model type='virtio'/&gt; &lt;!-- virtio = súper veloz --&gt;
+    &lt;/interface&gt;
+  &lt;/devices&gt;
+&lt;/domain&gt;</code></pre>
+              </div>
+
+              <div class="bento-card bento-hero">
+                <span class="card-badge">Lectura Fácil Renglón por Renglón</span>
+                <div class="card-title">Solo 4 Cosas Básicas</div>
+                <ul class="card-points">
+                  <li><strong>Nombre (<code>&lt;name&gt;</code>):</strong> La etiqueta con la que la identificas en la consola.</li>
+                  <li><strong>Procesadores (<code>&lt;vcpu&gt;</code>):</strong> Cuántos núcleos virtuales puede usar.</li>
+                  <li><strong>Memoria (<code>&lt;memory&gt;</code>):</strong> La cantidad de gigabytes de RAM.</li>
+                  <li><strong>Disco y Red (<code>virtio</code>):</strong> La tecnología paravirtualizada para que el disco y la red vuelen sin simular chips viejos.</li>
+                </ul>
+                <div class="card-highlight">📌 Crear un servidor virtual es simplemente escribir este archivo</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 12 de 25 • Definición de una VM en Código</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 12]:
+            "Muestren este código a los alumnos para quitarle el misterio a la virtualización:
+            'Muchachos, cuando ustedes crean una máquina en AWS o en Proxmox, detrás de la pantalla bonita hay exactamente este archivo XML'.
+            Son 4 partes lógicas:
+            1. ¿Cómo se llama?
+            2. ¿Cuántos CPUs tiene?
+            3. ¿Cuánta RAM tiene?
+            4. ¿Dónde está su disco y su tarjeta de red?
+            Fíjense en la palabra 'virtio'. Virtio es el estándar de Linux para que el disco y la red se comuniquen directo con el procesador a máxima velocidad."
+          </aside>
+        </section>
+
+      </section>
+
+      <!-- =====================================================================
+           BLOQUE 3: SIMULADOR 1 - LABORATORIO DE HIPERVISOR (1 Diapositiva Interactiva)
+           ===================================================================== -->
+      <section>
+        
+        <!-- Diapositiva 13 (3.1) SIMULADOR 1 TÁCTIL AUTOEXPLICATIVO -->
+        <section data-prevent-swipe>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Laboratorio en Vivo 1 <span class="badge-pill">Simulador Táctil</span>
+                <span class="badge-orange">Tablet Samsung S7</span>
+              </div>
+              <div class="slide-title">Laboratorio 1: Hipervisores, Vecino Ruidoso y Migración en Vivo</div>
+              <div class="slide-subtitle">Siga los 3 pasos visuales tocando la pantalla para experimentar la contención y la mudanza en caliente</div>
+            </div>
+
+            <div class="interactive-simulator" id="sim-hypervisor-container">
+              <!-- Guía rápida para la clase directamente en la pantalla -->
+              <div class="sim-guide-banner">
+                <div>
+                  <span class="sim-step-badge">Paso 1</span> <strong>Mueve el deslizador:</strong> Sube la sobreasignación de vCPU para ver cómo se llena el Host Alfa.
+                </div>
+                <div>
+                  <span class="sim-step-badge" style="background:var(--orange-accent);">Paso 2</span> <strong>Toca 'Vecino Ruidoso':</strong> Simula una app descontrolada que satura el servidor físico.
+                </div>
+                <div>
+                  <span class="sim-step-badge" style="background:var(--green);">Paso 3</span> <strong>Toca 'Live Migration':</strong> Muda el API Gateway al Host Beta en 0 segundos.
+                </div>
+              </div>
+
+              <!-- Controles Táctiles Claros -->
+              <div style="display:grid; grid-template-columns: 1fr 1fr 1.3fr; gap:14px; margin-bottom:6px;">
+                <div class="touch-slider-container">
+                  <div class="touch-slider-label">
+                    <span>Factor Sobreasignación vCPU:</span>
+                    <span class="value-pill" id="sim-val-vcpu">2.0 : 1</span>
+                  </div>
+                  <input type="range" class="touch-slider" id="sim-slider-vcpu" min="1.0" max="4.0" step="0.5" value="2.0">
+                </div>
+
+                <div class="touch-slider-container">
+                  <div class="touch-slider-label">
+                    <span>Sobreasignación de RAM:</span>
+                    <span class="value-pill" id="sim-val-ram">120 %</span>
+                  </div>
+                  <input type="range" class="touch-slider touch-slider-orange" id="sim-slider-ram" min="80" max="180" step="10" value="120">
+                </div>
+
+                <div style="display:flex; gap:8px; align-items:flex-end;">
+                  <button class="touch-btn touch-btn-orange" id="sim-btn-noisy" style="flex:1;">
+                    ⚡ Simular Vecino Ruidoso
+                  </button>
+                  <button class="touch-btn" id="sim-btn-migrate" style="flex:1.2;">
+                    🚀 Live Migration (Alfa &rarr; Beta)
+                  </button>
+                </div>
+              </div>
+
+              <!-- Nodos Físicos -->
+              <div class="nodes-container">
+                <!-- Host Alfa -->
+                <div class="physical-host-box" id="host-alfa-box">
+                  <div class="host-header">
+                    <span>🖥️ Servidor Físico Alfa (32 Cores • 128 GB RAM)</span>
+                    <span id="alfa-status-pill" style="background:#DBEAFE; color:#1E40AF; padding:2px 8px; border-radius:10px; font-size:0.72rem;">Carga Estable</span>
+                  </div>
+
+                  <div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:2px;">
+                      <span>Uso de Procesador Físico:</span>
+                      <strong id="alfa-cpu-txt">52%</strong>
+                    </div>
+                    <div class="meter-bar">
+                      <div class="meter-fill" id="alfa-cpu-bar" style="width: 52%;"></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:2px;">
+                      <span>Uso de Memoria RAM:</span>
+                      <strong id="alfa-ram-txt">84 / 128 GB (65%)</strong>
+                    </div>
+                    <div class="meter-bar">
+                      <div class="meter-fill" id="alfa-ram-bar" style="width: 65%;"></div>
+                    </div>
+                  </div>
+
+                  <div style="font-size:0.76rem; font-weight:700; color:var(--text-navy); margin-top:4px;">Máquinas Virtuales Funcionando Aquí:</div>
+                  <div id="host-alfa-vms" style="min-height:95px;">
+                    <div class="vm-chip" id="vm-1">
+                      <span><strong>VM-1: ERP de Facturación</strong> (Core de la empresa)</span>
+                      <span class="font-mono text-blue" style="font-size:0.72rem;">CPU: 45%</span>
+                    </div>
+                    <div class="vm-chip" id="vm-2">
+                      <span><strong>VM-2: API Gateway SOA</strong> (Atiende usuarios)</span>
+                      <span class="font-mono text-blue" id="vm2-cpu-txt" style="font-size:0.72rem;">CPU: 30%</span>
+                    </div>
+                    <div class="vm-chip" id="vm-3">
+                      <span><strong>VM-3: Proceso Batch</strong> (El vecino sospechoso)</span>
+                      <span class="font-mono text-orange" id="vm3-status-txt" style="font-size:0.72rem;">CPU: Normal</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Host Beta -->
+                <div class="physical-host-box" id="host-beta-box">
+                  <div class="host-header">
+                    <span>🖥️ Servidor Físico Beta (32 Cores • 128 GB RAM)</span>
+                    <span id="beta-status-pill" style="background:#E2E8F0; color:#334155; padding:2px 8px; border-radius:10px; font-size:0.72rem;">Servidor con Poco Uso</span>
+                  </div>
+
+                  <div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:2px;">
+                      <span>Uso de Procesador Físico:</span>
+                      <strong id="beta-cpu-txt">18%</strong>
+                    </div>
+                    <div class="meter-bar">
+                      <div class="meter-fill" id="beta-cpu-bar" style="width: 18%;"></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:2px;">
+                      <span>Uso de Memoria RAM:</span>
+                      <strong id="beta-ram-txt">32 / 128 GB (25%)</strong>
+                    </div>
+                    <div class="meter-bar">
+                      <div class="meter-fill" id="beta-ram-bar" style="width: 25%;"></div>
+                    </div>
+                  </div>
+
+                  <div style="font-size:0.76rem; font-weight:700; color:var(--text-navy); margin-top:4px;">Máquinas Virtuales Funcionando Aquí:</div>
+                  <div id="host-beta-vms" style="min-height:95px;">
+                    <div class="vm-chip" id="vm-4">
+                      <span><strong>VM-4: Analítica de Reportes</strong> (Poco tráfico)</span>
+                      <span class="font-mono text-blue" style="font-size:0.72rem;">CPU: 20%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Consola de Explicación en Vivo -->
+              <div style="margin-top:8px; background:#0F172A; border-radius:8px; padding:10px 14px; font-family:'JetBrains Mono', monospace; font-size:0.75rem; color:#94A3B8; display:flex; justify-content:space-between; align-items:center;">
+                <div id="sim-telemetry-log">
+                  🟢 [ESTADO NORMAL] Ambos servidores operan sin problemas. Tráfico de red fluido y memoria estable.
+                </div>
+                <div id="sim-migration-badge" style="display:none; color:var(--orange-vibrant); font-weight:700;">
+                  🔄 MIGRANDO MEMORIA: RONDA <span id="sim-iter-count">0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 13 de 25 • Laboratorio Táctil 1</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 13 (CÓMO USAR EL SIMULADOR EN LA TABLET)]:
+            1. "Atención todos a la pantalla. Tenemos dos servidores físicos: Alfa (a la izquierda) y Beta (a la derecha).
+            En Alfa tenemos el ERP de la empresa y la pasarela de pagos (VM-2)."
+            2. PASO 1: Desliza con el dedo el slider de vCPU Overcommit hacia la derecha (4.0:1).
+               Diles: "Miren cómo sube la barra de CPU. Metimos más procesadores virtuales de los que existen físicamente."
+            3. PASO 2: Toca el botón anaranjado '⚡ Simular Vecino Ruidoso'.
+               La VM-3 se pondrá roja y la barra de Alfa subirá al 94%.
+               Diles: "¡Alerta roja! El vecino ruidoso colapsó el servidor Alfa. Los clientes de la pasarela de pagos sienten lentitud."
+            4. PASO 3: Toca el botón azul '🚀 Live Migration'.
+               Verán la animación de rondas de memoria viva y en 1 segundo la VM-2 saltará solita al Servidor Beta.
+               Diles: "¡Miren esto! El API Gateway se mudó al servidor Beta sin que ningún cliente se desconectara. El servidor Alfa volvió a respirar."
+          </aside>
+        </section>
+
+      </section>
+
+      <!-- =====================================================================
+           BLOQUE 4: GRID COMPUTING Y REDES DE CÓMPUTO (5 Diapositivas)
+           ===================================================================== -->
+      <section>
+
+        <!-- Diapositiva 14 (4.1) ¿Qué es Grid Computing? -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Computación Distribuida <span class="badge-pill">Ian Foster & Carl Kesselman</span>
+                <span class="badge-orange">La Malla de Cómputo</span>
+              </div>
+              <div class="slide-title">¿Qué es Grid Computing? La Metáfora de la Red Eléctrica</div>
+              <div class="slide-subtitle">Conectar tu computadora a la pared y obtener potencia sin importar de qué planta provenga</div>
+            </div>
+
+            <div class="bento-grid grid-hero-split">
+              <div class="bento-card bento-hero">
+                <span class="card-badge">La Gran Idea (1999)</span>
+                <div class="card-title">Cómputo como un Servicio Público</div>
+                <p style="font-size:0.86rem; line-height:1.45; color:var(--text-body);">
+                  Ian Foster y Carl Kesselman propusieron una revolución: que los ciclos de procesamiento y el almacenamiento fueran tan accesibles como la electricidad (<em>Power Grid</em>).
+                </p>
+                <div class="analogy-box">
+                  <strong>La Metáfora del Enchufe:</strong><br>
+                  Cuando conectas tu cargador al tomacorriente de tu casa, no sabes si la luz viene de una presa hidroeléctrica, de paneles solares o de un generador en otra ciudad. Solo te importa que haya energía. El Grid hace lo mismo con la capacidad de cálculo.
+                </div>
+                <div class="card-highlight">⚡ Computación sin importar la ubicación geográfica</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">Característica 1</span>
+                <div class="card-title">Múltiples Dueños (Soberanía)</div>
+                <ul class="card-points">
+                  <li>Las computadoras no son de una sola empresa. Pertenecen a distintas universidades, centros médicos y laboratorios del mundo.</li>
+                  <li>Cada dueño pone sus reglas y horarios.</li>
+                </ul>
+                <div class="card-highlight">🤝 Colaboración federada y descentralizada</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">Característica 2</span>
+                <div class="card-title">Heterogeneidad Total</div>
+                <ul class="card-points">
+                  <li>Une supercomputadoras gigantes, servidores medianos y computadoras de escritorio normales bajo un mismo propósito.</li>
+                  <li>Sistemas operativos y marcas totalmente distintas.</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">🌐 Un solo cerebro construido de miles de piezas</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 14 de 25 • ¿Qué es Grid Computing?</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 14]:
+            "Cambiamos de marcha: de la virtualización pasamos al Grid Computing.
+            La virtualización divide una máquina grande en muchas chiquitas.
+            El Grid Computing hace exactamente lo contrario: une miles de máquinas separadas para que actúen como una máquina gigantesca.
+            Pongan el ejemplo del enchufe eléctrico:
+            Cuando prenden el foco de su cuarto, a nadie le importa si la electricidad la generó una presa en Chixoy o un panel solar en la costa. Solo quieren 120 voltios.
+            Eso es Grid Computing: mandar una simulación científica por Internet y que la resuelvan 50 universidades distintas sin que tengas que pedir permiso máquina por máquina."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 15 (4.2) Organizaciones Virtuales (VOs) -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Modelos de Colaboración <span class="badge-pill">Virtual Organizations</span>
+                <span class="badge-orange">Gobernanza y Confianza</span>
+              </div>
+              <div class="slide-title">Organizaciones Virtuales (VOs): Compartir sin Perder el Control</div>
+              <div class="slide-subtitle">Cómo permitir que científicos de otros países usen tus computadoras de forma segura</div>
+            </div>
+
+            <div class="bento-grid grid-triptych">
+              <div class="bento-card bento-hero">
+                <span class="card-badge">El Dilema de Confianza</span>
+                <div class="card-title">¿Por qué prestar mis equipos?</div>
+                <div style="font-size:0.83rem; line-height:1.45; color:var(--text-body);">
+                  ¿Por qué la Universidad de San Carlos dejaría que investigadores de Europa o Japón ejecuten programas dentro de sus servidores?
+                </div>
+                <ul class="card-points" style="margin-top:8px;">
+                  <li><strong>Respuesta:</strong> A través de un contrato temporal llamado <strong>Organización Virtual (VO)</strong>.</li>
+                  <li>Se pacta qué porcentaje de máquinas se prestan y en qué horarios (ej. solo de noche).</li>
+                </ul>
+                <div class="card-highlight">🤝 Alianzas estratégicas de cómputo</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">Seguridad en Malla</span>
+                <div class="card-title">Certificados Digitales (X.509)</div>
+                <ul class="card-points">
+                  <li>No se usan contraseñas comunes que se puedan robar o hackear.</li>
+                  <li>Cada investigador tiene un <strong>Certificado Digital criptográfico</strong> emitido por su universidad.</li>
+                  <li><strong>Pasaporte Temporal:</strong> Al enviar una tarea, se genera un pase temporal de 12 horas. Si alguien intercepta la tarea, el pase ya venció.</li>
+                </ul>
+                <div class="card-highlight">🔐 Seguridad criptográfica robusta</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">Soberanía Local</span>
+                <div class="card-title">El Dueño Local Manda Siempre</div>
+                <ul class="card-points">
+                  <li>Si un estudiante de la universidad local necesita usar el laboratorio para hacer una tarea, el sistema <strong>expulsa de inmediato la tarea internacional</strong>.</li>
+                  <li>Los usuarios locales jamás sufren lentitud por prestar sus computadoras.</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">🛡 La prioridad siempre es de la casa</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 15 de 25 • Organizaciones Virtuales</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 15]:
+            "¿Cómo resolvemos el problema de seguridad en el Grid?
+            Con una 'Organización Virtual' (VO).
+            Imaginen un tratado internacional: los hospitales de varios países se unen para analizar radiografías de cáncer.
+            Ningún hospital quiere que los datos de sus pacientes salgan de su país por temas de leyes y privacidad.
+            Con el Grid, el algoritmo viaja al hospital, procesa los datos adentro del servidor del hospital, y solo devuelve el resultado estadístico.
+            Y si el hospital necesita su máquina para atender una emergencia, desaloja el trabajo del Grid en un segundo."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 16 (4.3) HPC vs HTC: Carrera de 100m vs Maratón -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Paradigmas de Cómputo <span class="badge-pill">Miron Livny</span>
+                <span class="badge-orange">HPC vs HTC</span>
+              </div>
+              <div class="slide-title">HPC vs HTC: ¿Una Carrera de 100 Metros o una Maratón?</div>
+              <div class="slide-subtitle">La diferencia entre resolver un solo cálculo en segundos o millones de tareas a lo largo del año</div>
+            </div>
+
+            <div class="bento-grid grid-hero-split">
+              <div class="bento-card">
+                <span class="card-badge">HPC (High Performance)</span>
+                <div class="card-title">La Carrera de 100 Metros Planos</div>
+                <p style="font-size:0.84rem; line-height:1.45; color:var(--text-body);">
+                  Miles de procesadores trabajando pegados uno al lado del otro, comunicándose en millonésimas de segundo por cables especiales.
+                </p>
+                <ul class="card-points">
+                  <li><strong>Ejemplo Típico:</strong> El pronóstico del clima de mañana. Si tarda 2 días en calcularse, no sirve de nada. Se necesita el resultado YA.</li>
+                  <li><strong>Fragilidad:</strong> Si se desconecta un solo cable del cluster, toda la simulación se arruina y debe reiniciarse.</li>
+                </ul>
+                <div class="card-highlight">⏱ Métrica: Operaciones por segundo (FLOPS)</div>
+              </div>
+
+              <div class="bento-card bento-hero">
+                <span class="card-badge">HTC (High Throughput)</span>
+                <div class="card-title">La Maratón de Carga (El Reino del Grid)</div>
+                <p style="font-size:0.84rem; line-height:1.45; color:var(--text-body);">
+                  Millones de tareas que no dependen una de otra. Se envían por Internet normal a cualquier computadora disponible.
+                </p>
+                <ul class="card-points">
+                  <li><strong>Ejemplo Típico:</strong> Probar 10 millones de compuestos químicos contra una enfermedad. Cada molécula es un cálculo independiente.</li>
+                  <li><strong>Tolerancia a Fallos:</strong> Si una computadora se apaga a mitad del cálculo, el sistema reenvía esa tarea a otra máquina sin drama.</li>
+                </ul>
+                <div class="card-highlight">📈 Métrica: Tareas completadas por mes o año</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">La Frase Célebre</span>
+                <div class="card-title">Miron Livny (Creador de Condor)</div>
+                <div style="font-size:0.82rem; font-style:italic; line-height:1.45; color:var(--orange-accent); margin-bottom:4px;">
+                  "HPC busca la gloria de la velocidad instantánea; HTC busca la resistencia silenciosa de quien entrega toneladas de resultados sin detenerse jamás."
+                </div>
+                <div class="card-highlight card-highlight-orange">🎯 El principio detrás del Big Data y la Inteligencia Artificial</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 16 de 25 • HPC vs HTC</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 16]:
+            "Hagan esta pregunta en clase:
+            '¿Cuál es la diferencia entre HPC y HTC?'.
+            - HPC es el velocista olímpico: una supercomputadora con cables de fibra óptica ultra caros (InfiniBand). Si un procesador se equivoca, la carrera se arruina. Ejemplo: predecir la trayectoria de un huracán para evacuar una ciudad en 3 horas.
+            - HTC es el tren de carga: no va a 300 km/h, pero transporta 50 vagones de maíz durante semanas. Ejemplo: renderizar los cuadros de una película de Pixar o entrenar un modelo analítico bancario probando miles de combinaciones independientes."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 17 (4.4) Cycle Scavenging & BOINC: SETI y Folding@home -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Computación Voluntaria <span class="badge-pill">Aprovechar lo Ocioso</span>
+                <span class="badge-orange">Cycle Scavenging</span>
+              </div>
+              <div class="slide-title">Cycle Scavenging: El Poder de las Computadoras Dormidas</div>
+              <div class="slide-subtitle">Cómo millones de personas comunes crearon la supercomputadora más potente de la historia</div>
+            </div>
+
+            <div class="bento-grid grid-triptych">
+              <div class="bento-card bento-hero">
+                <span class="card-badge">El Concepto</span>
+                <div class="card-title">Carroñeo de Ciclos (Cycle Scavenging)</div>
+                <div style="font-size:0.83rem; line-height:1.45; color:var(--text-body);">
+                  ¿Qué hace la computadora de tu oficina o de tu casa mientras estás almorzando o leyendo un PDF?
+                </div>
+                <ul class="card-points" style="margin-top:8px;">
+                  <li>El procesador está al 98% ocioso consumiendo luz.</li>
+                  <li>Un programa en segundo plano aprovecha esos ciclos sobrantes para resolver tareas científicas sin que el usuario note lentitud.</li>
+                </ul>
+                <div class="card-highlight">♻️ Cero inversión en nuevos equipos</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">Caso 1: SETI@home</span>
+                <div class="card-title">Buscando Vida Extraterrestre</div>
+                <ul class="card-points">
+                  <li>Lanzado en 1999 por la Universidad de Berkeley.</li>
+                  <li>Más de <strong>5 millones de personas</strong> instalaron un salvapantallas que analizaba señales de radio del espacio cuando no usaban su PC.</li>
+                  <li>Demostró que la sociedad civil podía superar a los laboratorios militares.</li>
+                </ul>
+                <div class="card-highlight">📡 El inicio de la computación ciudadana</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">Caso 2: Folding@home</span>
+                <div class="card-title">El Récord en la Pandemia (2020)</div>
+                <ul class="card-points">
+                  <li>Durante el COVID-19, millones de gamers donaron la potencia de sus tarjetas gráficas (GPUs) para simular la proteína del virus.</li>
+                  <li>Alcanzó <strong>1.5 ExaFLOPS</strong>: fue más potente que las 500 supercomputadoras más grandes del mundo juntas.</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">🏆 Un récord absoluto de solidaridad y cómputo</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 17 de 25 • Cycle Scavenging & BOINC</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 17]:
+            "Mencionen este caso histórico que a todos les llama la atención:
+            En 2020, cuando estábamos encerrados por la pandemia, la Universidad de Stanford pidió ayuda en el proyecto Folding@home.
+            Cientos de miles de personas descargaron el software y dejaron sus computadoras gamer procesando mientras dormían.
+            El resultado: superaron a la supercomputadora más cara de Estados Unidos y de Japón juntas.
+            Esto demuestra que miles de procesadores medianos bien coordinados pueden vencer a cualquier supercomputadora de silicio único."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 18 (4.5) Caso Real: El LHC del CERN y su Red de 4 Niveles -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Caso Real a Gran Escala <span class="badge-pill">CERN WLCG</span>
+                <span class="badge-orange">La Malla Científica</span>
+              </div>
+              <div class="slide-title">El Grid del CERN: 50 Petabytes Anuales en 4 Niveles (Tiers)</div>
+              <div class="slide-subtitle">La arquitectura distribuida que descubrió el Bosón de Higgs conectando 42 países</div>
+            </div>
+
+            <div class="bento-grid grid-banner-trio">
+              <div class="bento-card bento-hero bento-banner">
+                <div class="card-title" style="margin-bottom: 4px;">¿Por qué el CERN no guardó todo en Suiza?</div>
+                <p style="font-size:0.85rem; line-height:1.4; color:var(--text-body);">
+                  El Gran Colisionador de Hadrones genera tantos datos que la red eléctrica de Suiza colapsaría si pusieran todos los servidores en Ginebra. Por eso crearon una red piramidal distribuida:
+                </p>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">Tier 0 (Suiza / CERN)</span>
+                <div class="card-title">Captura Inmediata</div>
+                <div style="font-size:0.78rem; color:var(--text-body); line-height:1.4;">
+                  Recibe los datos crudos del túnel subterráneo, los graba en cintas magnéticas de archivo seguro y hace el primer filtrado de partículas.
+                </div>
+                <div class="card-highlight">📼 Custodia original de los datos</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">Tier 1 (14 Centros Nacionales)</span>
+                <div class="card-title">Red Óptica de 100 Gbps</div>
+                <div style="font-size:0.78rem; color:var(--text-body); line-height:1.4;">
+                  Grandes laboratorios nacionales (EE.UU., Francia, Alemania, Reino Unido) que reciben copias de seguridad 24/7 por cables submarinos dedicados.
+                </div>
+                <div class="card-highlight card-highlight-orange">🌐 Enlace transatlántico dedicado</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">Tier 2 y 3 (160+ Universidades)</span>
+                <div class="card-title">El Análisis de los Alumnos</div>
+                <div style="font-size:0.78rem; color:var(--text-body); line-height:1.4;">
+                  Clusters universitarios donde estudiantes de doctorado e ingenieros ejecutan los algoritmos finales de búsqueda física.
+                </div>
+                <div class="card-highlight">🎓 Acceso abierto a la comunidad</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 18 de 25 • El Grid del CERN (WLCG)</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 18]:
+            "Este es el ejemplo cumbre de la ingeniería de sistemas:
+            El Gran Colisionador de Hadrones en Ginebra.
+            Cuando chocan los protones, generan millones de fotos por segundo.
+            ¿Cómo lo procesan?
+            - Tier 0: En Suiza guardan la cinta magnética.
+            - Tier 1: 14 centros gigantescos en el mundo reciben copias de respaldo.
+            - Tier 2 y 3: Universidades de todo el mundo analizan los datos.
+            Un estudiante en su cubículo de universidad en México o Guatemala puede correr una consulta en el Grid del CERN y recibir los datos procesados en minutos."
+          </aside>
+        </section>
+
+      </section>
+
+      <!-- =====================================================================
+           BLOQUE 5: SIMULADOR 2 - LABORATORIO DE GRID & MATCHMAKING (1 Diapositiva Interactiva)
+           ===================================================================== -->
+      <section>
+
+        <!-- Diapositiva 19 (5.1) SIMULADOR 2 TÁCTIL AUTOEXPLICATIVO -->
+        <section data-prevent-swipe>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Laboratorio en Vivo 2 <span class="badge-pill">Simulador Táctil</span>
+                <span class="badge-orange">Tablet Samsung S7</span>
+              </div>
+              <div class="slide-title">Laboratorio 2: Asignación Inteligente de Tareas (Matchmaking Grid)</div>
+              <div class="slide-subtitle">Vea cómo la malla distribuye trabajos según potencia y desaloja tareas si un dueño local despierta</div>
+            </div>
+
+            <div class="interactive-simulator" id="sim-grid-container">
+              <!-- Guía rápida para la clase directamente en la pantalla -->
+              <div class="sim-guide-banner">
+                <div>
+                  <span class="sim-step-badge">Paso 1</span> <strong>Toca 'Distribuir Trabajos':</strong> El algoritmo evalúa qué máquina tiene GPU y manda las tareas pesadas al nodo correcto.
+                </div>
+                <div>
+                  <span class="sim-step-badge" style="background:var(--orange-accent);">Paso 2</span> <strong>Toca 'Usuario Local Despierta':</strong> Simula que alguien toca el mouse en CUNOR; la tarea salta a otro nodo sin perder nada.
+                </div>
+              </div>
+
+              <!-- Fila Superior de Controles -->
+              <div style="display:grid; grid-template-columns: 1.2fr 1fr 1fr; gap:12px; margin-bottom:8px;">
+                <div style="background:#F1F5F9; border-radius:8px; padding:6px 14px; font-size:0.78rem; display:flex; align-items:center; gap:8px;">
+                  <span>Trabajos en la Cola de Espera:</span>
+                  <span class="font-mono text-blue" style="font-weight:700; font-size:0.95rem;" id="sim-grid-queue-count">8 Tareas Pendientes</span>
+                </div>
+
+                <button class="touch-btn" id="sim-btn-matchmake">
+                  ⚡ Distribuir Trabajos (Matchmaker)
+                </button>
+
+                <button class="touch-btn touch-btn-orange" id="sim-btn-evict">
+                  👤 Usuario Local Despierta (Desalojo)
+                </button>
+              </div>
+
+              <!-- Representación de Nodos en la Malla -->
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:12px; margin-top:6px;">
+                
+                <!-- Nodo 1 -->
+                <div class="bento-card" id="grid-node-1" style="padding:12px; border-color:#CBD5E1;">
+                  <div style="font-size:0.78rem; font-weight:700; color:var(--text-navy);">🇬🇹 Nodo 1: USAC Central</div>
+                  <div style="font-size:0.7rem; color:var(--text-muted);">Servidor Dedicado con GPU</div>
+                  <div style="font-size:0.72rem; font-family:'JetBrains Mono'; margin:6px 0; line-height:1.4;">
+                    CPU: 64 Núcleos<br>RAM: 128 GB<br>GPU: <strong>Nvidia A100</strong>
+                  </div>
+                  <div class="font-mono" id="node1-status" style="background:#DCFCE7; color:#166534; font-size:0.7rem; padding:4px 6px; border-radius:6px; text-align:center; font-weight:700;">
+                    ● LIBRE (Esperando)
+                  </div>
+                </div>
+
+                <!-- Nodo 2 -->
+                <div class="bento-card" id="grid-node-2" style="padding:12px; border-color:#CBD5E1;">
+                  <div style="font-size:0.78rem; font-weight:700; color:var(--text-navy);">🇬🇹 Nodo 2: CUNOC Quetzaltenango</div>
+                  <div style="font-size:0.7rem; color:var(--text-muted);">Laboratorio de Alumnos (Oportunista)</div>
+                  <div style="font-size:0.72rem; font-family:'JetBrains Mono'; margin:6px 0; line-height:1.4;">
+                    CPU: 16 Núcleos<br>RAM: 32 GB<br>GPU: No (Solo CPU)
+                  </div>
+                  <div class="font-mono" id="node2-status" style="background:#DCFCE7; color:#166534; font-size:0.7rem; padding:4px 6px; border-radius:6px; text-align:center; font-weight:700;">
+                    ● LIBRE (Esperando)
+                  </div>
+                </div>
+
+                <!-- Nodo 3 -->
+                <div class="bento-card" id="grid-node-3" style="padding:12px; border-color:#CBD5E1;">
+                  <div style="font-size:0.78rem; font-weight:700; color:var(--text-navy);">🇬🇹 Nodo 3: CUNOR Cobán</div>
+                  <div style="font-size:0.7rem; color:var(--text-muted);">PC de Oficina Docente (Oportunista)</div>
+                  <div style="font-size:0.72rem; font-family:'JetBrains Mono'; margin:6px 0; line-height:1.4;">
+                    CPU: 8 Núcleos<br>RAM: 16 GB<br>GPU: No (Solo CPU)
+                  </div>
+                  <div class="font-mono" id="node3-status" style="background:#DCFCE7; color:#166534; font-size:0.7rem; padding:4px 6px; border-radius:6px; text-align:center; font-weight:700;">
+                    ● LIBRE (Esperando)
+                  </div>
+                </div>
+
+                <!-- Nodo 4 -->
+                <div class="bento-card" id="grid-node-4" style="padding:12px; border-color:#CBD5E1;">
+                  <div style="font-size:0.78rem; font-weight:700; color:var(--text-navy);">🇨🇭 Nodo 4: CERN Tier-2</div>
+                  <div style="font-size:0.7rem; color:var(--text-muted);">Federación Internacional</div>
+                  <div style="font-size:0.72rem; font-family:'JetBrains Mono'; margin:6px 0; line-height:1.4;">
+                    CPU: 128 Núcleos<br>RAM: 256 GB<br>GPU: <strong>Nvidia H100</strong>
+                  </div>
+                  <div class="font-mono" id="node4-status" style="background:#DCFCE7; color:#166534; font-size:0.7rem; padding:4px 6px; border-radius:6px; text-align:center; font-weight:700;">
+                    ● LIBRE (Esperando)
+                  </div>
+                </div>
+              </div>
+
+              <!-- Consola de Explicación de la Malla -->
+              <div style="margin-top:10px; background:#0F172A; border-radius:8px; padding:10px 14px; font-family:'JetBrains Mono', monospace; font-size:0.75rem; color:#38BDF8; min-height:80px;">
+                <div style="color:#94A3B8; font-size:0.7rem; margin-bottom:4px;">
+                  $ planificador_grid --verificar-requisitos
+                </div>
+                <div id="sim-grid-log">
+                  🟢 [LISTO] 8 tareas esperando asignación. Toque 'Distribuir Trabajos' para ver el emparejamiento automático.
+                </div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 19 de 25 • Laboratorio Táctil 2</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 19 (CÓMO USAR EL SIMULADOR GRID EN LA TABLET)]:
+            1. "Observen estos 4 nodos: USAC Central en la capital, CUNOC en Quetzaltenango, CUNOR en Cobán y el CERN en Suiza.
+            Fíjense que USAC y CERN tienen tarjetas gráficas potentes (GPU), mientras que CUNOC y CUNOR son computadoras normales."
+            2. PASO 1: Toca el botón azul '⚡ Distribuir Trabajos'.
+               Las 8 tareas se distribuirán solas.
+               Diles: "Miren cómo el planificador pensó solo: las simulaciones pesadas de inteligencia artificial se las mandó a USAC y al CERN porque tienen GPU. Las tareas livianas se las mandó a las oficinas de CUNOC y CUNOR."
+            3. PASO 2: Toca el botón anaranjado '👤 Usuario Local Despierta'.
+               El nodo 3 (CUNOR) se pondrá en rojo y el trabajo saltará a USAC Central.
+               Diles: "El profesor de Cobán llegó a su oficina y movió el ratón. En 100 milisegundos, el sistema guardó el avance de la tarea científica y la mudó a la capital sin borrar nada. El profesor usa su máquina como si nada."
+          </aside>
+        </section>
+
+      </section>
+
+      <!-- =====================================================================
+           BLOQUE 6: ARQUITECTURA EMPRESARIAL, PROYECTOS Y CIERRE (6 Diapositivas)
+           ===================================================================== -->
+      <section>
+
+        <!-- Diapositiva 20 (6.1) Cómo la Virtualización dio vida al Cloud -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Convergencia de Paradigmas <span class="badge-pill">La Gran Fusión</span>
+                <span class="badge-orange">De Grid a Cloud</span>
+              </div>
+              <div class="slide-title">El Rescate: Cómo la Virtualización Hizo Posible la Nube</div>
+              <div class="slide-subtitle">El Grid aportó la idea del cómputo distribuido y la Virtualización le dio la cápsula de seguridad</div>
+            </div>
+
+            <div class="bento-grid grid-hero-split">
+              <div class="bento-card bento-hero">
+                <span class="card-badge">El Problema del Grid Antiguo</span>
+                <div class="card-title">El Infierno de las Versiones de Software</div>
+                <p style="font-size:0.85rem; line-height:1.45; color:var(--text-body);">
+                  En el año 2002, el Grid tenía un dolor de cabeza constante:
+                </p>
+                <div class="analogy-box">
+                  <strong>El Choque de Versiones:</strong><br>
+                  Un estudiante en Guatemala hacía su programa en Python 2.7. Al mandarlo por el Grid a una universidad en Europa que tenía Python 3.5 instalado, el programa fallaba con error de sintaxis. Nadie quería formatear su computadora para darle gusto a los demás.
+                </div>
+                <ul class="card-points" style="margin-top:8px;">
+                  <li><strong>El Rescate de la Virtualización:</strong> En lugar de mandar el código suelto, empaquetas el sistema completo dentro de una Máquina Virtual.</li>
+                  <li>Al nodo remoto no le importa qué versión tienes adentro; solo enciende tu máquina virtual y listo.</li>
+                </ul>
+                <div class="card-highlight">💡 Grid + Virtualización = El Nacimiento de AWS y Cloud Computing</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">El Grid Aportó</span>
+                <div class="card-title">Los Algoritmos Distribuidos</div>
+                <ul class="card-points">
+                  <li>La idea de cobrar el cómputo como agua o luz (Utility Computing).</li>
+                  <li>Los planificadores de tareas masivas en segundos.</li>
+                </ul>
+                <div class="card-highlight">🌐 La visión de la red global</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">La Virtualización Aportó</span>
+                <div class="card-title">El Aislamiento y la Facilidad</div>
+                <ul class="card-points">
+                  <li>Encender servidores en 2 minutos sin comprar racks físicos.</li>
+                  <li>Aislamiento perfecto entre clientes de una misma nube.</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">🛡 La muralla de seguridad comercial</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 20 de 25 • Convergencia Grid y Cloud</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 20]:
+            "Este es el momento 'Eureka' de la clase:
+            Muchos alumnos creen que Cloud Computing cayó del cielo en 2006 cuando Amazon lanzó EC2.
+            No. Amazon tomó los conceptos de Grid Computing (distribuir cómputo y cobrar por hora), les puso una capa de máquinas virtuales encima para que nadie pelee por versiones de software, y le puso una tarjeta de crédito al frente.
+            Así nació la nube moderna. Sin el Grid y sin la Virtualización, Cloud Computing simplemente no existiría."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 21 (6.2) Fórmulas de Consolidación y Ahorro -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Finanzas para Ingenieros <span class="badge-pill">Formulación de Proyectos</span>
+                <span class="badge-orange">Retorno de Inversión (ROI)</span>
+              </div>
+              <div class="slide-title">Cómo Justificar un Proyecto: Consolidación y Ahorro en Dólares</div>
+              <div class="slide-subtitle">Los números exactos que convencerán al Gerente Financiero de autorizar su propuesta</div>
+            </div>
+
+            <div class="bento-grid grid-triptych">
+              <div class="bento-card bento-hero">
+                <span class="card-badge">Métrica 1</span>
+                <div class="card-title">Ratio de Consolidación (CR)</div>
+                <div style="font-size:0.83rem; line-height:1.45; color:var(--text-body);">
+                  ¿Cuántos servidores viejos podemos apagar por cada servidor nuevo que compremos?
+                </div>
+                <div style="background:#FFFFFF; border:1px solid #BFDBFE; border-radius:8px; padding:10px; font-family:'JetBrains Mono'; font-size:0.82rem; margin:8px 0; color:var(--blue-deep); text-align:center;">
+                  Ratio = Servidores Viejos / Hosts Nuevos<br>
+                  (Típico: 8:1 hasta 12:1)
+                </div>
+                <p style="font-size:0.78rem; color:var(--text-muted);">
+                  Si tienes 24 servidores viejos, los reemplazas con solo 2 o 3 servidores modernos.
+                </p>
+                <div class="card-highlight">📉 Reducción del 80% en espacio de racks</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">Métrica 2</span>
+                <div class="card-title">Ahorro en Electricidad y Clima</div>
+                <div style="font-size:0.83rem; line-height:1.45; color:var(--text-body);">
+                  Un servidor físico viejo consume ~450 Watts continuos entre procesador y aire acondicionado.
+                </div>
+                <ul class="card-points" style="margin-top:6px;">
+                  <li>450 Watts durante 1 año = ~$700 USD de luz por máquina.</li>
+                  <li>Apagar 20 servidores viejos ahorra <strong>más de $14,000 USD anuales</strong> solo en el recibo de energía eléctrica.</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">💵 El proyecto se paga solo en 18 meses</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">Métrica 3</span>
+                <div class="card-title">Tolerancia N+1 (Alta Disponibilidad)</div>
+                <ul class="card-points">
+                  <li><strong>Regla de Oro:</strong> Siempre compra 1 servidor físico más de los que necesitas estrictamente.</li>
+                  <li>Si necesitas 2 servidores para soportar la carga, compras 3. Si un servidor se quema, los otros dos asumen la carga al instante sin apagar la empresa.</li>
+                </ul>
+                <div class="card-highlight">🛡 Continuidad operativa 24/7</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 21 de 25 • Justificación de Proyectos</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 21]:
+            "Pónganse en el papel de un graduado de ingeniería:
+            Llegan a una empresa y ven un rack lleno de 25 servidores viejos.
+            No le digan al gerente: 'Mire, la virtualización es moderna y bonita'. Al gerente general no le importa eso.
+            Díganle:
+            'Don Carlos, tenemos 25 computadoras viejas que nos cuestan $17,000 dólares al año de pura electricidad.
+            Si compramos 3 servidores modernos y los virtualizamos, apagamos 22 máquinas, ahorramos $14,000 dólares al año y si una máquina se quema, el sistema sigue funcionando'.
+            Eso es ingeniería de sistemas aplicada."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 22 (6.3) SIMULADOR 3: CALCULADORA INTERACTIVA DE PROYECTOS -->
+        <section data-prevent-swipe>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Herramienta de Negocio <span class="badge-pill">Calculadora en Vivo</span>
+                <span class="badge-orange">Tablet Samsung S7</span>
+              </div>
+              <div class="slide-title">Laboratorio 3: Calculadora de Dimensionamiento y Ahorro en TI</div>
+              <div class="slide-subtitle">Ajuste la cantidad de servidores de su empresa y observe el ahorro económico y la consolidación en tiempo real</div>
+            </div>
+
+            <div class="interactive-simulator" id="calc-project-container">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                <!-- Entradas Táctiles -->
+                <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:14px; display:flex; flex-direction:column; gap:12px;">
+                  <div style="font-size:0.85rem; font-weight:700; color:var(--text-navy);">Datos de la Empresa Actual:</div>
+
+                  <div class="touch-slider-container">
+                    <div class="touch-slider-label">
+                      <span>Servidores Físicos Actuales:</span>
+                      <span class="value-pill" id="calc-val-servers">25 Servidores</span>
+                    </div>
+                    <input type="range" class="touch-slider" id="calc-slider-servers" min="5" max="60" step="5" value="25">
+                  </div>
+
+                  <div class="touch-slider-container">
+                    <div class="touch-slider-label">
+                      <span>Uso Promedio Real de CPU:</span>
+                      <span class="value-pill" id="calc-val-util">15 %</span>
+                    </div>
+                    <input type="range" class="touch-slider touch-slider-orange" id="calc-slider-util" min="5" max="40" step="5" value="15">
+                  </div>
+
+                  <div class="touch-slider-container">
+                    <div class="touch-slider-label">
+                      <span>Potencia de los Nuevos Servidores:</span>
+                      <span class="value-pill" id="calc-val-cores">32 Cores por Host</span>
+                    </div>
+                    <input type="range" class="touch-slider" id="calc-slider-cores" min="16" max="64" step="8" value="32">
+                  </div>
+                </div>
+
+                <!-- Resultados Visuales -->
+                <div style="background:#EFF6FF; border:1.5px solid #BFDBFE; border-radius:10px; padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
+                  <div>
+                    <div style="font-size:0.78rem; font-weight:800; text-transform:uppercase; color:var(--blue-tech); letter-spacing:1px; margin-bottom:8px;">
+                      Propuesta de Ingeniería Resultante:
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+                      <div style="background:white; border-radius:8px; padding:10px; text-align:center;">
+                        <div style="font-size:0.74rem; color:var(--text-muted);">Servidores Nuevos (N+1):</div>
+                        <div style="font-size:2rem; font-weight:800; color:var(--blue-deep);" id="calc-res-hosts">3 Hosts</div>
+                      </div>
+
+                      <div style="background:white; border-radius:8px; padding:10px; text-align:center;">
+                        <div style="font-size:0.74rem; color:var(--text-muted);">Ratio Consolidación:</div>
+                        <div style="font-size:2rem; font-weight:800; color:var(--orange-accent);" id="calc-res-ratio">8.3 : 1</div>
+                      </div>
+                    </div>
+
+                    <div style="background:white; border-radius:8px; padding:12px; font-size:0.8rem; display:flex; flex-direction:column; gap:6px;">
+                      <div style="display:flex; justify-content:space-between;">
+                        <span>Ahorro Eléctrico Anual:</span>
+                        <strong class="text-green" id="calc-res-power">$ 15,840 USD / año</strong>
+                      </div>
+                      <div style="display:flex; justify-content:space-between;">
+                        <span>Espacio en Rack Liberado:</span>
+                        <strong class="text-blue" id="calc-res-rack">44 Unidades (U)</strong>
+                      </div>
+                      <div style="display:flex; justify-content:space-between;">
+                        <span>Reducción de Fallas Físicas:</span>
+                        <strong class="text-orange" id="calc-res-failures">88% menos piezas de silicio</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="font-size:0.74rem; color:var(--blue-deep); margin-top:8px;">
+                    📌 <em>Incluye tolerancia N+1: Un servidor completo puede quemarse sin que la empresa se caiga.</em>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 22 de 25 • Calculadora Interactiva de Proyectos</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 22 (DINÁMICA DE LA CALCULADORA EN CLASE)]:
+            1. "Toquen los deslizadores en la pantalla de la tablet frente a los alumnos.
+            Díganle a un alumno: 'Dime cuántos servidores tiene la empresa donde trabajas o imaginas'.
+            Si dice 40 servidores, muevan el slider a 40 servidores y dejen el uso al 15%.
+            Miren la magia: el sistema calcula automáticamente que con solo 4 hosts físicos modernos reemplazan todo el datacenter, ahorrando más de $25,000 dólares al año en energía.
+            Esto convierte la teoría de la clase en un argumento de negocio tangible e inmediato."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 23 (6.4) Caso de Estudio: Arquitectura Híbrida -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Caso Práctico <span class="badge-pill">Ingeniería Real</span>
+                <span class="badge-orange">Arquitectura de Solución</span>
+              </div>
+              <div class="slide-title">Caso Real: Arquitectura Híbrida de un Banco (KVM + Grid + Cloud)</div>
+              <div class="slide-subtitle">Cómo procesar 15 millones de transacciones de tarjetas de crédito sin gastar medio millón de dólares</div>
+            </div>
+
+            <div class="bento-grid grid-banner-trio">
+              <div class="bento-card bento-hero bento-banner">
+                <div class="card-title" style="margin-bottom: 4px;">El Problema del Banco</div>
+                <p style="font-size:0.85rem; line-height:1.45; color:var(--text-body);">
+                  Un banco debe revisar de 1:00 AM a 5:00 AM todas las compras del día con modelos de inteligencia artificial para detectar fraudes. Comprar supercomputadoras dedicadas costaría $400,000 USD y pasarían apagadas de día. <strong>¿Qué hizo el arquitecto de sistemas?</strong>
+                </p>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">Capa 1: Virtualización</span>
+                <div class="card-title">Cluster KVM Core</div>
+                <div style="font-size:0.78rem; color:var(--text-body); line-height:1.4;">
+                  3 servidores físicos con KVM que sostienen las bases de datos y la web del banco 24/7 con alta disponibilidad.
+                </div>
+                <div class="card-highlight">🏢 El corazón estable de la empresa</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">Capa 2: Grid Oportunista</span>
+                <div class="card-title">800 PCs de Agencias Bancarias</div>
+                <div style="font-size:0.78rem; color:var(--text-body); line-height:1.4;">
+                  A las 2:00 AM las agencias están cerradas. Los 800 computadores de los cajeros se encienden solas y procesan el 80% de los fraudes con Grid computing gratis.
+                </div>
+                <div class="card-highlight card-highlight-orange">♻️ Cero inversión en hardware nuevo</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">Capa 3: Nube (Cloud Bursting)</span>
+                <div class="card-title">Desborde a AWS Spot</div>
+                <div style="font-size:0.78rem; color:var(--text-body); line-height:1.4;">
+                  En días pico como el Black Friday o Navidad, si las 800 PCs no alcanzan, el sistema alquila 50 máquinas en la nube por 2 horas y las apaga al terminar.
+                </div>
+                <div class="card-highlight">☁️ Elasticidad infinita bajo demanda</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 23 de 25 • Caso de Estudio Híbrido</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 23]:
+            "Miren la elegancia de este diseño de ingeniería:
+            En vez de pedirle al banco $400,000 dólares para comprar servidores monstruosos que pasan vacíos de día, el arquitecto usó las tres herramientas de este curso:
+            1. Virtualización KVM para la base de datos central.
+            2. Grid Computing para poner a trabajar las computadoras de las agencias bancarias mientras están cerradas de madrugada.
+            3. Y si es Navidad o Black Friday, desborda a la nube (AWS) por un par de horas a precio de descuento.
+            Esto es verdadera arquitectura de sistemas."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 24 (6.5) Checklist del Ingeniero: ¿Cuándo usar qué? -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="slide-header">
+              <div class="slide-category">
+                Criterio Profesional <span class="badge-pill">Toma de Decisiones</span>
+                <span class="badge-orange">Checklist de Ingeniería</span>
+              </div>
+              <div class="slide-title">El Checklist del Ingeniero: ¿Cuándo Usar Cada Tecnología?</div>
+              <div class="slide-subtitle">La guía definitiva de selección tecnológica para su carrera profesional</div>
+            </div>
+
+            <div class="bento-grid grid-quad">
+              <div class="bento-card bento-hero">
+                <span class="card-badge">Virtualización (VMs)</span>
+                <div class="card-title">Úsala Cuando:</div>
+                <ul class="card-points">
+                  <li>Necesitas <strong>aislamiento estricto de seguridad</strong> entre sistemas no confiables.</li>
+                  <li>Corres sistemas con sistemas operativos diferentes (Windows Server + Linux).</li>
+                  <li>Exiges <strong>Live Migration</strong> para dar mantenimiento al hardware sin caídas.</li>
+                </ul>
+                <div class="card-highlight">🏢 Core empresarial, ERPs y Data Centers</div>
+              </div>
+
+              <div class="bento-card bento-card-orange">
+                <span class="card-badge card-badge-orange">Contenedores (Docker)</span>
+                <div class="card-title">Úsalos Cuando:</div>
+                <ul class="card-points">
+                  <li>Desarrollas <strong>microservicios y APIs REST</strong> (visto en SOA).</li>
+                  <li>Requieres arrancar instancias en milisegundos y desplegar cambios continuamente (CI/CD).</li>
+                  <li>Tu aplicación es <em>stateless</em> y escala horizontalmente.</li>
+                </ul>
+                <div class="card-highlight card-highlight-orange">🚀 Agilidad de software y desarrollo web</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">Grid Computing (HTC)</span>
+                <div class="card-title">Úsalo Cuando:</div>
+                <ul class="card-points">
+                  <li>El problema es <strong>masivamente paralelizable</strong> (cálculo de millones de tareas independientes).</li>
+                  <li>Colaboras con múltiples universidades o sedes con equipos ociosos (Cycle scavenging).</li>
+                  <li>El tiempo se mide en horas o días, no en segundos.</li>
+                </ul>
+                <div class="card-highlight">🌐 Supercómputo distribuido sin costo</div>
+              </div>
+
+              <div class="bento-card">
+                <span class="card-badge">Cloud Computing</span>
+                <div class="card-title">Úsalo Cuando:</div>
+                <ul class="card-points">
+                  <li>El tráfico de tu negocio es impredecible y no quieres administrar fierros físicos.</li>
+                  <li>Prefieres pagar por uso mensual (OPEX) en lugar de comprar equipo caro (CAPEX).</li>
+                  <li>Necesitas presencia global en minutos.</li>
+                </ul>
+                <div class="card-highlight">☁️ Time-to-Market y elasticidad comercial</div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 24 de 25 • Checklist del Ingeniero</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 24]:
+            "Esta diapositiva es el resumen ejecutivo que los acompañará en su carrera:
+            No existe una tecnología mejor que otra; existe la tecnología adecuada para el problema adecuado.
+            - ¿Seguridad y sistemas pesados? Máquinas Virtuales.
+            - ¿Microservicios rápidos y APIs? Contenedores Docker.
+            - ¿Millones de simulaciones independientes aprovechando equipos que ya tienes? Grid Computing.
+            - ¿Crecimiento elástico sin comprar hardware? Cloud Computing."
+          </aside>
+        </section>
+
+        <!-- Diapositiva 25 (6.6) Conclusiones y Cierre -->
+        <section>
+          <div class="bento-slide-wrapper">
+            <div class="title-slide-container">
+              <div class="title-hero" style="justify-content:center; text-align:center;">
+                <div class="title-badge-top" style="justify-content:center;">
+                  Seminario de Sistemas 1 • Ciclo 2026 - 2S
+                </div>
+                <h1 class="title-main" style="font-size:2.8rem; margin:18px 0;">
+                  ¡Gracias por su Atención!
+                </h1>
+                <p class="title-sub" style="margin:0 auto 20px auto;">
+                  "La mejor arquitectura de infraestructura es aquella que realiza tareas colosales sin que el usuario final note su existencia."
+                </p>
+                <div class="title-author" style="text-align:center;">
+                  <strong>Ing. Mario Ramírez Tobar</strong>
+                  <span>Docente Titular • Seminario de Sistemas 1 • Facultad de Ingeniería</span>
+                </div>
+              </div>
+
+              <div class="title-sidebar">
+                <div class="bento-card bento-hero" style="flex:1;">
+                  <span class="card-badge">Próxima Actividad</span>
+                  <div class="card-title">Práctica de Laboratorio</div>
+                  <ul class="card-points">
+                    <li>Instalaremos KVM y crearemos nuestra primera máquina virtual con <code>virsh</code> en Linux.</li>
+                    <li>Probaremos límites de CPU y asignación de memoria.</li>
+                  </ul>
+                  <div class="card-highlight">💻 Habilitar virtualización (VT-x) en su BIOS</div>
+                </div>
+
+                <div class="bento-card bento-card-orange" style="flex:1;">
+                  <span class="card-badge card-badge-orange">Espacio Abierto</span>
+                  <div class="card-title">Preguntas & Comentarios</div>
+                  <ul class="card-points card-points-orange">
+                    <li>Dudas sobre sobreasignación y vecino ruidoso.</li>
+                    <li>Preguntas sobre dimensionamiento de proyectos.</li>
+                  </ul>
+                  <div class="card-highlight card-highlight-orange">💬 Micrófono abierto para la clase</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>Facultad de Ingeniería • Seminario de Sistemas 1 • <strong>Ing. Mario Ramírez Tobar</strong></div>
+              <div>Diapositiva 25 de 25 • Cierre de Cátedra</div>
+            </div>
+          </div>
+          <aside class="notes">
+            [GUION DOCENTE - SLIDE 25]:
+            "Llegamos al final de la sesión de hoy.
+            Recuerden los mensajes clave: la virtualización resolvió el desperdicio del hardware y dio vida a la nube; el Grid computing demostró que la unión de miles de computadoras ordinarias puede superar a las supercomputadoras más caras del planeta.
+            En la próxima sesión de laboratorio llevaremos esto a la consola con comandos reales de KVM.
+            Abro el micrófono para cualquier pregunta o duda de la clase. Muchas gracias."
+          </aside>
+        </section>
+
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js CDN Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+
+  <!-- Lógica Interactiva y Scripts de Simulación -->
+  <script>
+    Reveal.initialize({
+      width: 1200,
+      height: 675,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0,
+      controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: 'c/t',
+      showSlideNumber: 'all',
+      hash: true,
+      history: true,
+      keyboard: true,
+      overview: true,
+      center: false,
+      touch: true,
+      loop: false,
+      navigationMode: 'default',
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      plugins: [ RevealHighlight, RevealNotes ]
+    });
+
+    // =========================================================================
+    // PREVENCIÓN DE INTERFERENCIA TÁCTIL EN SAMSUNG GALAXY TAB S7
+    // =========================================================================
+    const interactiveContainers = document.querySelectorAll('.interactive-simulator, input[type="range"], button');
+    interactiveContainers.forEach(el => {
+      ['touchstart', 'touchmove', 'touchend', 'pointerdown', 'pointermove'].forEach(evtName => {
+        el.addEventListener(evtName, (e) => {
+          e.stopPropagation();
+        }, { passive: false });
+      });
+    });
+
+    // =========================================================================
+    // SIMULADOR 1: HIPERVISOR, NOISY NEIGHBOR & LIVE MIGRATION
+    // =========================================================================
+    const sliderVcpu = document.getElementById('sim-slider-vcpu');
+    const sliderRam = document.getElementById('sim-slider-ram');
+    const valVcpu = document.getElementById('sim-val-vcpu');
+    const valRam = document.getElementById('sim-val-ram');
+    const btnNoisy = document.getElementById('sim-btn-noisy');
+    const btnMigrate = document.getElementById('sim-btn-migrate');
+    const alfaCpuBar = document.getElementById('alfa-cpu-bar');
+    const alfaCpuTxt = document.getElementById('alfa-cpu-txt');
+    const betaCpuBar = document.getElementById('beta-cpu-bar');
+    const betaCpuTxt = document.getElementById('beta-cpu-txt');
+    const alfaRamBar = document.getElementById('alfa-ram-bar');
+    const alfaRamTxt = document.getElementById('alfa-ram-txt');
+    const betaRamBar = document.getElementById('beta-ram-bar');
+    const betaRamTxt = document.getElementById('beta-ram-txt');
+    const telemetryLog = document.getElementById('sim-telemetry-log');
+    const migrationBadge = document.getElementById('sim-migration-badge');
+    const iterCountTxt = document.getElementById('sim-iter-count');
+    const hostAlfaVms = document.getElementById('host-alfa-vms');
+    const hostBetaVms = document.getElementById('host-beta-vms');
+    const vm2 = document.getElementById('vm-2');
+    const vm3 = document.getElementById('vm-3');
+    const vm3Status = document.getElementById('vm3-status-txt');
+    const vm2CpuTxt = document.getElementById('vm2-cpu-txt');
+    const alfaStatusPill = document.getElementById('alfa-status-pill');
+
+    let isNoisyActive = false;
+    let isVm2OnAlfa = true;
+
+    function updateHypervisorMeters() {
+      const vcpuRatio = parseFloat(sliderVcpu.value);
+      const ramOvercommit = parseInt(sliderRam.value);
+      valVcpu.textContent = `${vcpuRatio.toFixed(1)} : 1`;
+      valRam.textContent = `${ramOvercommit} %`;
+
+      let baseAlfaCpu = isVm2OnAlfa ? 52 : 32;
+      let baseBetaCpu = isVm2OnAlfa ? 18 : 38;
+
+      if (isNoisyActive) {
+        baseAlfaCpu += 42;
+      }
+
+      baseAlfaCpu = Math.min(100, Math.round(baseAlfaCpu * (vcpuRatio / 2.0)));
+      baseBetaCpu = Math.min(100, Math.round(baseBetaCpu * (vcpuRatio / 2.0)));
+
+      alfaCpuBar.style.width = `${baseAlfaCpu}%`;
+      alfaCpuTxt.textContent = `${baseAlfaCpu}%`;
+      betaCpuBar.style.width = `${baseBetaCpu}%`;
+      betaCpuTxt.textContent = `${baseBetaCpu}%`;
+
+      if (baseAlfaCpu >= 85) {
+        alfaCpuBar.className = 'meter-fill meter-fill-danger';
+        alfaCpuTxt.style.color = '#DC2626';
+        alfaStatusPill.style.background = '#FEE2E2';
+        alfaStatusPill.style.color = '#991B1B';
+        alfaStatusPill.textContent = '¡Colapso por Contención!';
+      } else if (baseAlfaCpu >= 70) {
+        alfaCpuBar.className = 'meter-fill meter-fill-warning';
+        alfaCpuTxt.style.color = '#EA580C';
+        alfaStatusPill.style.background = '#FFEDD5';
+        alfaStatusPill.style.color = '#C2410C';
+        alfaStatusPill.textContent = 'Carga Alta';
+      } else {
+        alfaCpuBar.className = 'meter-fill';
+        alfaCpuTxt.style.color = '#0F172A';
+        alfaStatusPill.style.background = '#DBEAFE';
+        alfaStatusPill.style.color = '#1E40AF';
+        alfaStatusPill.textContent = 'Carga Estable';
+      }
+
+      const ramAlfaVal = isVm2OnAlfa ? Math.round(84 * (ramOvercommit / 100)) : Math.round(68 * (ramOvercommit / 100));
+      const ramBetaVal = isVm2OnAlfa ? Math.round(32 * (ramOvercommit / 100)) : Math.round(48 * (ramOvercommit / 100));
+      
+      const ramAlfaPct = Math.min(100, Math.round((ramAlfaVal / 128) * 100));
+      const ramBetaPct = Math.min(100, Math.round((ramBetaVal / 128) * 100));
+
+      alfaRamBar.style.width = `${ramAlfaPct}%`;
+      alfaRamTxt.textContent = `${ramAlfaVal} / 128 GB (${ramAlfaPct}%)`;
+      betaRamBar.style.width = `${ramBetaPct}%`;
+      betaRamTxt.textContent = `${ramBetaVal} / 128 GB (${ramBetaPct}%)`;
+    }
+
+    if (sliderVcpu && sliderRam) {
+      sliderVcpu.addEventListener('input', updateHypervisorMeters);
+      sliderRam.addEventListener('input', updateHypervisorMeters);
+    }
+
+    // Botón Noisy Neighbor
+    if (btnNoisy) {
+      btnNoisy.addEventListener('click', () => {
+        isNoisyActive = !isNoisyActive;
+        if (isNoisyActive) {
+          btnNoisy.textContent = '🛑 Detener Vecino Ruidoso';
+          btnNoisy.style.background = '#DC2626';
+          vm3.style.borderColor = '#DC2626';
+          vm3.style.background = '#FEF2F2';
+          vm3Status.textContent = 'CPU: 100% (Colapso)';
+          vm3Status.style.color = '#DC2626';
+          telemetryLog.innerHTML = '<span style="color:#F87171;">⚠️ [ALERTA DE CONTENCIÓN] La VM-3 se volvió loca y saturó el Host Alfa. La pasarela de pagos (VM-2) sufre retrasos. ¡Múdale a Beta con el botón azul!</span>';
+        } else {
+          btnNoisy.textContent = '⚡ Simular Vecino Ruidoso';
+          btnNoisy.style.background = 'var(--orange-accent)';
+          vm3.style.borderColor = '#CBD5E1';
+          vm3.style.background = 'white';
+          vm3Status.textContent = 'CPU: Normal';
+          vm3Status.style.color = 'var(--orange-accent)';
+          telemetryLog.innerHTML = '<span style="color:#4ADE80;">🟢 [NORMALIZADO] El proceso batch terminó. El servidor Alfa vuelve a estar en carga verde.</span>';
+        }
+        updateHypervisorMeters();
+      });
+    }
+
+    // Botón Live Migration
+    if (btnMigrate) {
+      btnMigrate.addEventListener('click', () => {
+        if (!isVm2OnAlfa) {
+          telemetryLog.textContent = '🔄 Regresando la VM-2 al Servidor Alfa para reiniciar el experimento...';
+          hostAlfaVms.appendChild(vm2);
+          isVm2OnAlfa = true;
+          btnMigrate.textContent = '🚀 Live Migration (Alfa → Beta)';
+          updateHypervisorMeters();
+          return;
+        }
+
+        btnMigrate.disabled = true;
+        btnMigrate.textContent = '⏳ Migrando en vivo...';
+        migrationBadge.style.display = 'block';
+        vm2.classList.add('migrating');
+
+        let iter = 1;
+        telemetryLog.innerHTML = `<span style="color:#FBBF24;">🔄 [PASO 1] Copiando memoria RAM de VM-2 (16 GB) hacia el Servidor Beta por la red...</span>`;
+        iterCountTxt.textContent = iter;
+
+        const interval = setInterval(() => {
+          iter++;
+          iterCountTxt.textContent = iter;
+          if (iter === 2) {
+            telemetryLog.innerHTML = `<span style="color:#FBBF24;">🔄 [PASO 2] Copiando solo los últimos cambios de memoria (páginas sucias)...</span>`;
+          } else if (iter === 3) {
+            telemetryLog.innerHTML = `<span style="color:#FBBF24;">🔄 [PASO 3] Casi listo: solo quedan 30 megabytes por transferir...</span>`;
+          } else if (iter === 4) {
+            clearInterval(interval);
+            telemetryLog.innerHTML = `<span style="color:#F97316;">⚡ [SALTO FINAL] Pausa atómica de 28 milisegundos. Mudando control de procesador a Beta...</span>`;
+            
+            setTimeout(() => {
+              hostBetaVms.appendChild(vm2);
+              vm2.classList.remove('migrating');
+              isVm2OnAlfa = false;
+              migrationBadge.style.display = 'none';
+              btnMigrate.disabled = false;
+              btnMigrate.textContent = '↩️ Devolver VM-2 a Alfa';
+              telemetryLog.innerHTML = `<span style="color:#4ADE80;">🎉 ¡ÉXITO! La pasarela de pagos se mudó al Servidor Beta en 0 segundos de caída. Servidor Alfa desahogado.</span>`;
+              updateHypervisorMeters();
+            }, 600);
+          }
+        }, 750);
+      });
+    }
+
+    // =========================================================================
+    // SIMULADOR 2: MATCHMAKING GRID & DESALOJO OPORTUNISTA
+    // =========================================================================
+    const btnMatchmake = document.getElementById('sim-btn-matchmake');
+    const btnEvict = document.getElementById('sim-btn-evict');
+    const gridLog = document.getElementById('sim-grid-log');
+    const queueCountTxt = document.getElementById('sim-grid-queue-count');
+    const node1Status = document.getElementById('node1-status');
+    const node2Status = document.getElementById('node2-status');
+    const node3Status = document.getElementById('node3-status');
+    const node4Status = document.getElementById('node4-status');
+
+    let isMatchmade = false;
+
+    if (btnMatchmake) {
+      btnMatchmake.addEventListener('click', () => {
+        isMatchmade = true;
+        queueCountTxt.textContent = '0 Tareas (Todas Asignadas)';
+        
+        node1Status.style.background = '#DBEAFE';
+        node1Status.style.color = '#1E40AF';
+        node1Status.textContent = '● EJECUTANDO (Tarea GPU Inteligencia Artificial)';
+
+        node2Status.style.background = '#FFEDD5';
+        node2Status.style.color = '#C2410C';
+        node2Status.textContent = '● OPORTUNISTA (Tarea de Álgebra)';
+
+        node3Status.style.background = '#FFEDD5';
+        node3Status.style.color = '#C2410C';
+        node3Status.textContent = '● OPORTUNISTA (Simulación Química)';
+
+        node4Status.style.background = '#DBEAFE';
+        node4Status.style.color = '#1E40AF';
+        node4Status.textContent = '● EJECUTANDO (Tarea CERN Física Partículas)';
+
+        gridLog.innerHTML = `
+          <span style="color:#4ADE80;">✅ [ASIGNACIÓN INTELIGENTE COMPLETADA]:</span><br>
+          &bull; Tareas con GPU &rarr; Enviadas a <strong>USAC Central</strong> y al <strong>CERN</strong> porque tienen tarjetas gráficas.<br>
+          &bull; Tareas normales &rarr; Enviadas a las PCs de <strong>CUNOC y CUNOR</strong> mientras no hay usuarios locales.
+        `;
+      });
+    }
+
+    if (btnEvict) {
+      btnEvict.addEventListener('click', () => {
+        if (!isMatchmade) {
+          gridLog.innerHTML = `<span style="color:#FBBF24;">⚠️ Primero toque 'Distribuir Trabajos' para ver tareas activas en los nodos.</span>`;
+          return;
+        }
+
+        node3Status.style.background = '#FEE2E2';
+        node3Status.style.color = '#991B1B';
+        node3Status.textContent = '👤 PROFESOR USANDO LA PC (Expulsado)';
+
+        gridLog.innerHTML = `
+          <span style="color:#F87171;">⚡ [DESALOJO DISPARADO EN CUNOR]:</span><br>
+          &bull; Un profesor movió el ratón en Cobán &rarr; La tarea Grid se congeló en 100 ms.<br>
+          &bull; <span style="color:#38BDF8;">El trabajo fue mudado automáticamente a <strong>USAC Central</strong> para terminar su cálculo sin perder nada.</span>
+        `;
+      });
+    }
+
+    // =========================================================================
+    // SIMULADOR 3: CALCULADORA DE PROYECTOS DE TI
+    // =========================================================================
+    const calcSliderServers = document.getElementById('calc-slider-servers');
+    const calcSliderUtil = document.getElementById('calc-slider-util');
+    const calcSliderCores = document.getElementById('calc-slider-cores');
+    const calcValServers = document.getElementById('calc-val-servers');
+    const calcValUtil = document.getElementById('calc-val-util');
+    const calcValCores = document.getElementById('calc-val-cores');
+    const calcResHosts = document.getElementById('calc-res-hosts');
+    const calcResRatio = document.getElementById('calc-res-ratio');
+    const calcResPower = document.getElementById('calc-res-power');
+    const calcResRack = document.getElementById('calc-res-rack');
+    const calcResFailures = document.getElementById('calc-res-failures');
+
+    function updateProjectCalculator() {
+      const servers = parseInt(calcSliderServers.value);
+      const util = parseInt(calcSliderUtil.value);
+      const cores = parseInt(calcSliderCores.value);
+
+      calcValServers.textContent = `${servers} Servidores`;
+      calcValUtil.textContent = `${util} %`;
+      calcValCores.textContent = `${cores} Cores por Host`;
+
+      const totalLegacyCores = servers * 8;
+      const effectiveCoresNeeded = totalLegacyCores * (util / 100);
+
+      const safeCapacityPerHost = cores * 0.70;
+      let rawHostsNeeded = Math.ceil(effectiveCoresNeeded / safeCapacityPerHost);
+      if (rawHostsNeeded < 2) rawHostsNeeded = 2;
+
+      const totalHostsWithNPlus1 = rawHostsNeeded + 1;
+      const ratio = (servers / totalHostsWithNPlus1).toFixed(1);
+
+      const oldPowerCost = servers * 710;
+      const newPowerCost = totalHostsWithNPlus1 * 600;
+      const powerSavings = Math.max(0, oldPowerCost - newPowerCost);
+
+      const rackSpaceSaved = (servers * 2) - (totalHostsWithNPlus1 * 2);
+      const failureReductionPct = Math.round(((servers - totalHostsWithNPlus1) / servers) * 100);
+
+      calcResHosts.textContent = `${totalHostsWithNPlus1} Hosts`;
+      calcResRatio.textContent = `${ratio} : 1`;
+      calcResPower.textContent = `$ ${powerSavings.toLocaleString('en-US')} USD / año`;
+      calcResRack.textContent = `${Math.max(4, rackSpaceSaved)} Unidades (U)`;
+      calcResFailures.textContent = `${Math.max(10, failureReductionPct)}% menos fallas`;
+    }
+
+    if (calcSliderServers && calcSliderUtil && calcSliderCores) {
+      calcSliderServers.addEventListener('input', updateProjectCalculator);
+      calcSliderUtil.addEventListener('input', updateProjectCalculator);
+      calcSliderCores.addEventListener('input', updateProjectCalculator);
+      updateProjectCalculator();
+    }
+  </script>
+</body>
+</html>

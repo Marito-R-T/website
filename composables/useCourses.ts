@@ -10,6 +10,8 @@ export interface Slide {
   duration?: string
 }
 
+export type CourseColor = 'sage' | 'butter' | 'coral' | 'cobalt' | 'lilac' | 'mint'
+
 export interface Course {
   id: string
   code: string
@@ -19,7 +21,7 @@ export interface Course {
   universityEn?: string
   semester: string
   semesterEn?: string
-  color: 'sage' | 'butter' | 'coral' | 'cobalt'
+  color: CourseColor
   description: string
   descriptionEn?: string
   topicsCount: number
@@ -59,30 +61,60 @@ export const useCourses = () => {
     },
     {
       id: 'ss-1',
-      code: 'CC-770',
+      code: 'SS-1',
       name: 'Seminario de Sistemas 1',
       nameEn: 'Systems Seminar 1',
       university: 'Universidad de San Carlos (CUNOC)',
       universityEn: 'San Carlos University (CUNOC)',
       semester: 'Ciclo Académico',
       semesterEn: 'Academic Cycle',
-      color: 'sage',
-      description: 'BPM, BPMN, BPMS, Cloud Computing, Agentic AI, Arquitectura, Metodologías de Trabajo en Proyectos de Sistemas, Grid Computing, Virtualización y más.',
-      descriptionEn: 'BPM, BPMN, BPMS, Cloud Computing, Agentic AI, Architecture, Systems Project Working Methodologies, Grid Computing, Virtualization, and more.',
-      topicsCount: 6,
+      color: 'cobalt',
+      description: 'Conceptos avanzados de infraestructura, computación distribuida, virtualización y tecnologías cloud.',
+      descriptionEn: 'Advanced infrastructure concepts, distributed computing, virtualization, and cloud architectures.',
+      topicsCount: 4,
       slides: [
         {
-          id: 'virtualization-grid-computing',
-          title: 'Sobre las ventajas de la Virtualización y el Grid Computing',
-          titleEn: 'On the advantages of Virtualization and Grid Computing',
-          description: 'Sobre la Virtualización, sus ventajas y desventajas, la comparativa sobre la dockerización, simulaciones y cómo poner a trabajar varias computadoras en un proceso complejo',
-          descriptionEn: 'On Virtualization, its advantages and disadvantages, the comparison with dockerization, simulations, and how to put several computers to work on a complex process',
-          file: '/slides/ss-1/virtualization-grid-computing.html',
+          id: 'virtualizacion-grid-computing',
+          title: 'Virtualización y Grid Computing',
+          titleEn: 'Virtualization & Grid Computing',
+          description: 'Hipervisores, contenedores, arquitecturas de clúster, procesamiento distribuido y computación en malla.',
+          descriptionEn: 'Hypervisors, containers, cluster computing, distributed processing, and grid topologies.',
+          file: '/slides/ss-1/virtualizacion-grid-computing.html',
           date: '2026',
-          tags: ['Virtualización', 'Docker', 'Arquitectura', 'Simulador', 'Grid Computing'],
-          duration: '---'
+          tags: ['Virtualización', 'Grid Computing', 'Cloud', 'Infraestructura'],
+          duration: '50 min'
         }
       ]
+    },
+    {
+      id: 'arquitectura-computadoras',
+      code: 'CC-770',
+      name: 'Arquitectura de Computadoras',
+      nameEn: 'Computer Architecture',
+      university: 'Universidad de San Carlos (CUNOC)',
+      universityEn: 'San Carlos University (CUNOC)',
+      semester: 'Ciclo Académico',
+      semesterEn: 'Academic Cycle',
+      color: 'sage',
+      description: 'Organización de CPU, microarquitectura, jerarquía de memoria caché, buses de datos e interfaces de entrada/salida.',
+      descriptionEn: 'CPU organization, microarchitecture, cache memory hierarchy, data buses, and peripheral I/O interfaces.',
+      topicsCount: 6,
+      slides: []
+    },
+    {
+      id: 'introduccion-programacion',
+      code: 'CC-700',
+      name: 'Introducción a la Programación',
+      nameEn: 'Introduction to Programming',
+      university: 'Universidad de San Carlos (CUNOC)',
+      universityEn: 'San Carlos University (CUNOC)',
+      semester: 'Ciclo Académico',
+      semesterEn: 'Academic Cycle',
+      color: 'coral',
+      description: 'Fundamentos de lógica algorítmica, programación estructurada y orientada a objetos, estructuras de datos y Git.',
+      descriptionEn: 'Fundamentals of algorithmic thinking, structured and OOP paradigm, basic data structures, and Git version control.',
+      topicsCount: 10,
+      slides: []
     }
   ]
 

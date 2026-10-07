@@ -45,7 +45,7 @@
             <span
               :class="[
                 'rounded-xl border-2 border-black px-2.5 py-1 font-mono text-xs font-black text-black shadow-brutal-sm dark:border-white',
-                course.color === 'butter' ? 'bg-[#FBE795]' : course.color === 'sage' ? 'bg-[#C6D8C4]' : 'bg-[#F4B6A6]'
+                colorBadgeClass(course.color)
               ]"
             >
               {{ course.code }}
@@ -71,7 +71,7 @@
           {{ course.description }}
         </p>
 
-        <!-- Slides List -->
+        <!-- Slides List with Coherent Color Identity -->
         <div class="mt-6">
           <h3 class="font-mono text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3">
             {{ $t('AvailableSlidesHeader') }}
@@ -81,7 +81,10 @@
             <div
               v-for="slide in course.slides"
               :key="slide.id"
-              class="flex flex-col justify-between p-4 rounded-2xl border-2 border-black bg-[#F6F3EB] shadow-brutal-sm transition-all hover:-translate-y-1 hover:shadow-brutal dark:border-white dark:bg-[#161814]"
+              :class="[
+                'flex flex-col justify-between p-4 rounded-2xl border-2 border-black shadow-brutal-sm transition-all hover:-translate-y-1 hover:shadow-brutal dark:border-white',
+                colorCardBgClass(course.color)
+              ]"
             >
               <div>
                 <div class="flex items-center justify-between gap-2">
@@ -105,7 +108,7 @@
                   <span
                     v-for="tag in slide.tags"
                     :key="tag"
-                    class="rounded-md border border-black/20 bg-white px-2 py-0.5 font-mono text-[10px] font-bold text-black dark:border-white/20 dark:bg-[#20241E] dark:text-neutral-200"
+                    class="rounded-md border border-black/20 bg-white/80 px-2 py-0.5 font-mono text-[10px] font-bold text-black dark:border-white/20 dark:bg-[#1D211A] dark:text-neutral-200"
                   >
                     #{{ tag }}
                   </span>
@@ -116,20 +119,23 @@
               <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 flex items-center gap-2">
                 <button
                   type="button"
-                  class="neo-btn neo-btn-accent text-xs flex-1"
-                  @click="openSlide(slide.file, slide.title, course.name)"
+                  :class="[
+                    'neo-btn text-xs flex-1 !border-black dark:!border-white',
+                    colorBtnClass(course.color)
+                  ]"
+                  @click="openSlide(slide.file, slide.title, course.name, course.color)"
                 >
                   <svg class="w-3.5 h-3.5 text-black" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
                   </svg>
-                  <span>{{ $t('OpenInTheater') }}</span>
+                  <span class="font-bold">{{ $t('OpenInTheater') }}</span>
                 </button>
 
                 <a
                   :href="slide.file"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="neo-btn text-xs px-2.5"
+                  class="neo-btn text-xs px-2.5 bg-white text-black dark:bg-[#20251E] dark:text-white"
                   :title="$t('FullScreen')"
                 >
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -159,6 +165,7 @@
       :slide-url="activeSlideUrl"
       :title="activeSlideTitle"
       :course-name="activeCourseName"
+      :course-color="activeCourseColor"
       @close="viewerOpen = false"
     />
   </div>
@@ -167,6 +174,7 @@
 <script setup lang="ts">
 import SlideViewer from '~/components/bento/SlideViewer.vue'
 import BentoCard from '~/components/bento/BentoCard.vue'
+import type { CourseColor } from '~/composables/useCourses'
 
 const { courses } = useCourses()
 
@@ -175,11 +183,65 @@ const viewerOpen = ref(false)
 const activeSlideUrl = ref('')
 const activeSlideTitle = ref('')
 const activeCourseName = ref('')
+const activeCourseColor = ref<string>('butter')
 
-const openSlide = (url: string, title: string, courseName: string) => {
+const openSlide = (url: string, title: string, courseName: string, courseColor?: string) => {
   activeSlideUrl.value = url
   activeSlideTitle.value = title
   activeCourseName.value = courseName
+  activeCourseColor.value = courseColor || 'butter'
   viewerOpen.value = true
+}
+
+// Color system styling helpers
+const colorBadgeClass = (color: CourseColor) => {
+  switch (color) {
+    case 'sage':
+      return 'bg-[#C6D8C4]'
+    case 'coral':
+      return 'bg-[#F4B6A6]'
+    case 'cobalt':
+      return 'bg-[#B8C9F8]'
+    case 'lilac':
+      return 'bg-[#DCC6E0]'
+    case 'mint':
+      return 'bg-[#B5EAD7]'
+    default:
+      return 'bg-[#FBE795]'
+  }
+}
+
+const colorCardBgClass = (color: CourseColor) => {
+  switch (color) {
+    case 'sage':
+      return 'bg-[#F4F8F3] dark:bg-[#141E15]'
+    case 'coral':
+      return 'bg-[#FDF5F3] dark:bg-[#1F1513]'
+    case 'cobalt':
+      return 'bg-[#F3F6FD] dark:bg-[#131724]'
+    case 'lilac':
+      return 'bg-[#FAF4FC] dark:bg-[#1C141E]'
+    case 'mint':
+      return 'bg-[#F2FAF6] dark:bg-[#121F1B]'
+    default:
+      return 'bg-[#FFFDF2] dark:bg-[#1E1C14]'
+  }
+}
+
+const colorBtnClass = (color: CourseColor) => {
+  switch (color) {
+    case 'sage':
+      return '!bg-[#C6D8C4] hover:!bg-[#b8cbb6] text-black'
+    case 'coral':
+      return '!bg-[#F4B6A6] hover:!bg-[#f2a794] text-black'
+    case 'cobalt':
+      return '!bg-[#B8C9F8] hover:!bg-[#a2b8f5] text-black'
+    case 'lilac':
+      return '!bg-[#DCC6E0] hover:!bg-[#ceb2d4] text-black'
+    case 'mint':
+      return '!bg-[#B5EAD7] hover:!bg-[#9fe0c9] text-black'
+    default:
+      return '!bg-[#FBE795] hover:!bg-[#fae27e] text-black'
+  }
 }
 </script>

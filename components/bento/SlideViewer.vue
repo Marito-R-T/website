@@ -2,7 +2,7 @@
   <Teleport to="body">
     <div
       v-if="isOpen"
-      class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/70 backdrop-blur-sm"
+      class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/75 backdrop-blur-sm"
       @keydown.esc="close"
     >
       <div
@@ -15,7 +15,10 @@
         >
           <div class="flex items-center gap-3 overflow-hidden">
             <span
-              class="hidden sm:inline-block rounded-md border-2 border-black bg-[#FBE795] px-2 py-0.5 font-mono text-[11px] font-extrabold uppercase text-black shadow-brutal-sm dark:border-white"
+              :class="[
+                'hidden sm:inline-block rounded-md border-2 border-black px-2.5 py-0.5 font-mono text-[11px] font-extrabold uppercase text-black shadow-brutal-sm dark:border-white',
+                badgeBgClass
+              ]"
             >
               {{ courseName || 'Curso' }}
             </span>
@@ -24,36 +27,42 @@
             </h3>
           </div>
 
-          <!-- Controls -->
+          <!-- Controls with guaranteed inline SVGs -->
           <div class="flex items-center gap-2">
             <button
               type="button"
-              class="neo-btn text-xs px-2.5 py-1"
+              class="neo-btn text-xs px-2.5 py-1.5"
               title="Pantalla Completa"
               @click="toggleFullscreen"
             >
-              <Icon name="heroicons:arrows-pointing-out-20-solid" class="w-4 h-4" />
-              <span class="hidden md:inline">Full</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+              </svg>
+              <span class="hidden md:inline font-bold">Full</span>
             </button>
 
             <a
               :href="slideUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="neo-btn text-xs px-2.5 py-1"
+              class="neo-btn text-xs px-2.5 py-1.5"
               title="Abrir en pestaña nueva"
             >
-              <Icon name="heroicons:arrow-top-right-on-square-20-solid" class="w-4 h-4" />
-              <span class="hidden md:inline">Pestaña</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+              <span class="hidden md:inline font-bold">Pestaña</span>
             </a>
 
             <button
               type="button"
-              class="neo-btn neo-btn-primary text-xs px-2.5 py-1 font-black"
-              title="Cerrar"
+              class="neo-btn neo-btn-primary text-xs px-2.5 py-1.5 font-black"
+              title="Cerrar (Esc)"
               @click="close"
             >
-              <Icon name="heroicons:x-mark-20-solid" class="w-4 h-4" />
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
           </div>
         </header>
@@ -79,12 +88,30 @@ interface Props {
   slideUrl: string
   title: string
   courseName?: string
+  courseColor?: string
 }
 
 const props = defineProps<Props>()
 const emit = defineEmits(['close'])
 
 const theaterRef = ref<HTMLElement | null>(null)
+
+const badgeBgClass = computed(() => {
+  switch (props.courseColor) {
+    case 'sage':
+      return 'bg-[#C6D8C4]'
+    case 'coral':
+      return 'bg-[#F4B6A6]'
+    case 'cobalt':
+      return 'bg-[#B8C9F8]'
+    case 'lilac':
+      return 'bg-[#DCC6E0]'
+    case 'mint':
+      return 'bg-[#B5EAD7]'
+    default:
+      return 'bg-[#FBE795]'
+  }
+})
 
 const close = () => {
   emit('close')

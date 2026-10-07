@@ -129,7 +129,7 @@
           <button
             type="button"
             class="neo-btn !bg-black !text-white hover:!bg-neutral-800 dark:!bg-white dark:!text-black"
-            @click="openSlide('/slides/compiladores-2/risc-v.html', $t('FeaturedSlideTitle'), $t('FeaturedSlideCourse'))"
+            @click="openSlide('/slides/compiladores-2/risc-v.html', $t('FeaturedSlideTitle'), $t('FeaturedSlideCourse'), 'butter')"
           >
             <svg class="w-4 h-4 text-[#FBE795] dark:text-[#3056D3]" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
@@ -218,19 +218,21 @@
         </div>
       </BentoCard>
 
-      <!-- 7. LIVE DYNAMIC NOTE / GITHUB RAW TILE (12 cols) -->
+      <!-- 7. LIVE DYNAMIC NOTE / GITHUB RAW TILE (12 cols) - Perfect Non-Overlapping Layout & HTML Markdown -->
       <BentoCard
         color="white"
         custom-class="md:col-span-12 flex flex-col justify-between"
-        stamp="LIVE NOTE ● GITHUB SWR"
       >
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-black/10 pb-3 dark:border-white/10">
-          <div class="flex items-center gap-2">
-            <span class="relative flex h-2.5 w-2.5">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+          <div class="flex flex-wrap items-center gap-2.5">
+            <span class="inline-block rounded-md border-2 border-black bg-[#FBE795] px-2.5 py-0.5 font-mono text-[10px] font-extrabold uppercase tracking-wider text-black shadow-brutal-sm dark:border-white">
+              LIVE NOTE ● GITHUB SWR
             </span>
-            <span class="font-mono text-xs font-bold uppercase text-neutral-700 dark:text-neutral-300">
+            <span class="flex items-center gap-1.5 font-mono text-xs font-bold text-neutral-700 dark:text-neutral-300">
+              <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
               {{ liveNote?.metadata?.tag || 'Aviso en Vivo' }} ● {{ liveNote?.metadata?.date || 'Actual' }}
             </span>
           </div>
@@ -243,7 +245,7 @@
               @click="refreshLiveNote"
             >
               <span>Refrescar</span>
-              <span :class="['font-mono', refreshing ? 'animate-spin' : '']">↻</span>
+              <span :class="['font-mono font-bold', refreshing ? 'animate-spin' : '']">↻</span>
             </button>
             <a
               href="https://github.com/Marito-R-T/website/edit/main/content/announcement.md"
@@ -261,12 +263,14 @@
           <h3 class="font-display text-xl sm:text-2xl font-extrabold text-black dark:text-white">
             {{ liveNote?.metadata?.title || 'Cargando nota en vivo...' }}
           </h3>
-          <p class="mt-2 text-sm sm:text-base text-neutral-800 dark:text-neutral-200 leading-relaxed font-medium">
-            {{ liveNote?.body }}
-          </p>
+          <!-- Formatted Markdown Body with HTML & Links -->
+          <div
+            class="mt-3 text-sm sm:text-base text-neutral-800 dark:text-neutral-200 leading-relaxed font-medium"
+            v-html="parseMarkdown(liveNote?.body || '')"
+          />
         </div>
 
-        <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 flex flex-wrap items-center justify-between text-[11px] font-mono text-neutral-500 dark:text-neutral-400">
+        <div class="mt-5 pt-3 border-t border-black/10 dark:border-white/10 flex flex-wrap items-center justify-between text-[11px] font-mono text-neutral-500 dark:text-neutral-400">
           <span>Fuente: {{ liveNote?.source === 'github-raw' ? 'GitHub Raw (0 redespliegues)' : 'Sincronizado' }}</span>
           <span>Actualizado: {{ liveNote?.fetchedAt ? new Date(liveNote.fetchedAt).toLocaleTimeString() : 'Ahora' }}</span>
         </div>
@@ -279,6 +283,7 @@
       :slide-url="activeSlideUrl"
       :title="activeSlideTitle"
       :course-name="activeCourseName"
+      :course-color="activeCourseColor"
       @close="viewerOpen = false"
     />
   </div>
@@ -296,11 +301,13 @@ const viewerOpen = ref(false)
 const activeSlideUrl = ref('')
 const activeSlideTitle = ref('')
 const activeCourseName = ref('')
+const activeCourseColor = ref('butter')
 
-const openSlide = (url: string, title: string, courseName: string) => {
+const openSlide = (url: string, title: string, courseName: string, courseColor?: string) => {
   activeSlideUrl.value = url
   activeSlideTitle.value = title
   activeCourseName.value = courseName
+  activeCourseColor.value = courseColor || 'butter'
   viewerOpen.value = true
 }
 
@@ -312,5 +319,26 @@ const refreshLiveNote = async () => {
   refreshing.value = true
   await refreshLiveNoteRaw()
   refreshing.value = false
+}
+
+// Markdown parser helper for dynamic body text
+const parseMarkdown = (raw: string): string => {
+  if (!raw) return ''
+  let html = raw
+
+  // Convert Bold: **text** -> <strong>text</strong>
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-extrabold text-black dark:text-white">$1</strong>')
+
+  // Convert Italics: *text* -> <em>text</em>
+  html = html.replace(/\*(.*?)\*/g, '<em>$1</em>')
+
+  // Convert Markdown Links: [text](url) -> <a href="url">text</a>
+  html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="font-bold underline decoration-2 decoration-black dark:decoration-white hover:text-[#3056D3] dark:hover:text-[#6484FA] transition-colors">$1</a>')
+
+  // Convert Line Breaks
+  html = html.replace(/\r?\n\r?\n/g, '<br/><br/>')
+  html = html.replace(/\r?\n/g, '<br/>')
+
+  return html
 }
 </script>
