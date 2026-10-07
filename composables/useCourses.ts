@@ -66,8 +66,8 @@ export const useCourses = () => {
       nameEn: 'Systems Seminar 1',
       university: 'Universidad de San Carlos (CUNOC)',
       universityEn: 'San Carlos University (CUNOC)',
-      semester: 'Ciclo Académico',
-      semesterEn: 'Academic Cycle',
+      semester: 'Septimo Semestre',
+      semesterEn: 'Seventh Semester',
       color: 'cobalt',
       description: 'Conceptos avanzados de infraestructura, computación distribuida, virtualización y tecnologías cloud.',
       descriptionEn: 'Advanced infrastructure concepts, distributed computing, virtualization, and cloud architectures.',
@@ -85,36 +85,6 @@ export const useCourses = () => {
           duration: '50 min'
         }
       ]
-    },
-    {
-      id: 'arquitectura-computadoras',
-      code: 'CC-770',
-      name: 'Arquitectura de Computadoras',
-      nameEn: 'Computer Architecture',
-      university: 'Universidad de San Carlos (CUNOC)',
-      universityEn: 'San Carlos University (CUNOC)',
-      semester: 'Ciclo Académico',
-      semesterEn: 'Academic Cycle',
-      color: 'sage',
-      description: 'Organización de CPU, microarquitectura, jerarquía de memoria caché, buses de datos e interfaces de entrada/salida.',
-      descriptionEn: 'CPU organization, microarchitecture, cache memory hierarchy, data buses, and peripheral I/O interfaces.',
-      topicsCount: 6,
-      slides: []
-    },
-    {
-      id: 'introduccion-programacion',
-      code: 'CC-700',
-      name: 'Introducción a la Programación',
-      nameEn: 'Introduction to Programming',
-      university: 'Universidad de San Carlos (CUNOC)',
-      universityEn: 'San Carlos University (CUNOC)',
-      semester: 'Ciclo Académico',
-      semesterEn: 'Academic Cycle',
-      color: 'coral',
-      description: 'Fundamentos de lógica algorítmica, programación estructurada y orientada a objetos, estructuras de datos y Git.',
-      descriptionEn: 'Fundamentals of algorithmic thinking, structured and OOP paradigm, basic data structures, and Git version control.',
-      topicsCount: 10,
-      slides: []
     }
   ]
 
