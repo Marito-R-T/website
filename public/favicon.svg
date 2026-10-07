@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Neo-Brutalist Offset Hard Shadow -->
+  <rect x="8" y="8" width="50" height="50" rx="12" fill="#111111" />
+  
+  <!-- Main Butter Yellow Tile with Solid Border -->
+  <rect x="4" y="4" width="50" height="50" rx="12" fill="#FBE795" stroke="#111111" stroke-width="3.5" stroke-linejoin="round" />
+  
+  <!-- Geometric Neo-Brutalist 'M' Monogram -->
+  <path d="M 16 43 L 16 17 L 24.5 17 L 29 27.5 L 33.5 17 L 42 17 L 42 43 L 35 43 L 35 25.5 L 31.2 34 L 26.8 34 L 23 25.5 L 23 43 Z" fill="#111111" />
+</svg>
