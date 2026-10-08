@@ -67,6 +67,8 @@ Abre `composables/useCourses.ts` y agrega la presentación al arreglo `slides` d
 ```
 
 ### Paso C: Desplegar a Vercel
+Al ejecutar `npm run build`, el script automatizado `prebuild` (`scripts/inject-slide-favicons.js`) verifica que cualquier nuevo `.html` tenga vinculados automáticamente los favicons (`favicon.svg`, `favicon.ico`, `apple-touch-icon`).
+
 ```bash
 git add .
 git commit -m "feat(slides): agregar presentacion optimizacion a compiladores 2"
