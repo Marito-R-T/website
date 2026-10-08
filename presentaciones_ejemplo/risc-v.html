@@ -4793,25 +4793,25 @@ public class Persona {
 
       modalBody.innerHTML = `
         <div style="margin-bottom: 12px; font-size: 0.85rem; color: var(--text-cream);">
-          <strong style="color: var(--badge-teal); font-size: 0.95rem;">Función:</strong> <code>\${escapeHtml(jInfo.name)}</code> &nbsp;|&nbsp;
-          <strong style="color: var(--title-pink);">Programa Activo:</strong> \${prog.name}
+          <strong style="color: var(--badge-teal); font-size: 0.95rem;">Función:</strong> <code>${escapeHtml(jInfo.name)}</code> &nbsp;|&nbsp;
+          <strong style="color: var(--title-pink);">Programa Activo:</strong> ${prog.name}
         </div>
         <div class="code-dual-box" style="margin-bottom: 12px;">
           <div class="code-col">
             <div class="code-col-header" style="color: var(--badge-teal);">☕ CÓDIGO FUENTE JAVA (ALTO NIVEL)</div>
-            <pre style="margin: 0; font-family: var(--font-code); font-size: 0.78rem; line-height: 1.4; color: var(--title-cream); white-space: pre-wrap;"><code>\${escapeHtml(jInfo.code)}</code></pre>
+            <pre style="margin: 0; font-family: var(--font-code); font-size: 0.78rem; line-height: 1.4; color: var(--title-cream); white-space: pre-wrap;"><code>${escapeHtml(jInfo.code)}</code></pre>
           </div>
           <div class="code-col">
             <div class="code-col-header" style="color: var(--title-pink);">📝 CÓDIGO TRES DIRECCIONES (C3D)</div>
             <div style="font-family: var(--font-code); font-size: 0.75rem; line-height: 1.35; color: var(--title-cream);">
-              \${prog.quads.map(q => \`<div><strong class="quad-num">\${q.num}</strong>: <code>\${escapeHtml(q.text)}</code> <span style="color: var(--text-muted); font-size: 0.68rem;">— \${q.desc}</span></div>\`).join('')}
+              ${prog.quads.map(q => `<div><strong class="quad-num">${q.num}</strong>: <code>${escapeHtml(q.text)}</code> <span style="color: var(--text-muted); font-size: 0.68rem;">— ${q.desc}</span></div>`).join('')}
             </div>
           </div>
         </div>
         <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-cream-faint); border-left: 3.5px solid var(--badge-teal); padding: 10px 14px; border-radius: 2px;">
           <h4 style="margin: 0 0 6px 0; color: var(--badge-teal); font-family: var(--font-heading); font-size: 0.85rem;">MAPEO AL FRAME POINTER (-offset(fp)) Y MANEJO DE PILA</h4>
           <div style="font-size: 0.78rem; line-height: 1.45; color: var(--text-cream);">
-            \${jInfo.mappingHtml}
+            ${jInfo.mappingHtml}
           </div>
         </div>
       `;
