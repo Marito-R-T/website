@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>De Código 3 Direcciones a RISC-V | Compiladores 2</title>
 
   <!-- Reveal.js & Plugins via CDN -->
@@ -482,6 +482,7 @@
       flex-direction: column !important;
       justify-content: flex-start !important;
       box-sizing: border-box !important;
+      overflow: hidden !important;
     }
 
     .sim-top-bar {
@@ -1041,7 +1042,10 @@
       align-items: center;
       gap: 8px;
       min-height: 25px;
+      height: 25px;
       flex-shrink: 0;
+      box-sizing: border-box;
+      overflow: hidden;
     }
     .sim-console-prompt {
       color: var(--badge-teal);
@@ -1050,6 +1054,9 @@
     }
     .sim-console-msg {
       color: var(--text-cream);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* Diagrama visual del Heap */
@@ -2188,22 +2195,22 @@ jal  ra, factorialRecursivo
             <!-- Barra Superior 1: Selector de Programa y Controles de Ejecución en 1 sola fila -->
             <div class="sim-top-bar">
               <div class="sim-prog-selector">
-                <button class="sim-btn active" onclick="simSetProgram('arith')" id="pbtn-arith">➕ Aritmética</button>
-                <button class="sim-btn" onclick="simSetProgram('fact')" id="pbtn-fact">⭐ fact(4)</button>
-                <button class="sim-btn" onclick="simSetProgram('calls')" id="pbtn-calls">A ➔ B ➔ C</button>
-                <button class="sim-btn" onclick="simSetProgram('qsort')" id="pbtn-qsort">QuickSort (Heap)</button>
-                <button class="sim-btn" onclick="simSetProgram('while_prog')" id="pbtn-while_prog">While (FP)</button>
-                <button class="sim-btn" onclick="simSetProgram('oop')" id="pbtn-oop">Heap & this</button>
+                <button type="button" class="sim-btn active" onclick="simSetProgram('arith')" id="pbtn-arith">➕ Aritmética</button>
+                <button type="button" class="sim-btn" onclick="simSetProgram('fact')" id="pbtn-fact">⭐ fact(4)</button>
+                <button type="button" class="sim-btn" onclick="simSetProgram('calls')" id="pbtn-calls">A ➔ B ➔ C</button>
+                <button type="button" class="sim-btn" onclick="simSetProgram('qsort')" id="pbtn-qsort">QuickSort (Heap)</button>
+                <button type="button" class="sim-btn" onclick="simSetProgram('while_prog')" id="pbtn-while_prog">While (FP)</button>
+                <button type="button" class="sim-btn" onclick="simSetProgram('oop')" id="pbtn-oop">Heap & this</button>
               </div>
 
               <!-- Botones de Paso Prominentes: REGRESAR y AVANZAR -->
               <div class="sim-action-controls">
-                <button class="sim-btn sim-btn-step-back" onclick="simStepBack()" title="Regresar un paso (Deshacer)">⏪ REGRESAR</button>
-                <button class="sim-btn sim-btn-step-next" onclick="simStep()" title="Avanzar paso">AVANZAR ⏩</button>
-                <button class="sim-btn" onclick="simAutoPlay()" id="btn-auto">⚡ AUTO</button>
-                <button class="sim-btn" onclick="simReset()">🔄 RESET</button>
-                <button class="sim-btn sim-btn-java" onclick="toggleJavaDrawer()" id="btn-toggle-java" title="Ver código Java">☕ JAVA</button>
-                <button class="sim-btn" onclick="toggleJavaModal()" title="Ver análisis completo en modal" style="border-color: var(--title-pink); color: var(--title-pink);">🔍 MODAL</button>
+                <button type="button" class="sim-btn sim-btn-step-back" onclick="simStepBack()" title="Regresar un paso (Deshacer)">⏪ REGRESAR</button>
+                <button type="button" class="sim-btn sim-btn-step-next" onclick="simStep()" title="Avanzar paso">AVANZAR ⏩</button>
+                <button type="button" class="sim-btn" onclick="simAutoPlay()" id="btn-auto">⚡ AUTO</button>
+                <button type="button" class="sim-btn" onclick="simReset()">🔄 RESET</button>
+                <button type="button" class="sim-btn sim-btn-java" onclick="toggleJavaDrawer()" id="btn-toggle-java" title="Ver código Java">☕ JAVA</button>
+                <button type="button" class="sim-btn" onclick="toggleJavaModal()" title="Ver análisis completo en modal" style="border-color: var(--title-pink); color: var(--title-pink);">🔍 MODAL</button>
               </div>
             </div>
 
@@ -2251,9 +2258,9 @@ jal  ra, factorialRecursivo
               <div class="sim-pane">
                 <div class="sim-pane-header">
                   <div class="sim-code-tabs">
-                    <button class="sim-tab-btn active" id="tab-btn-asm" onclick="simSetCodeTab('asm')">⚡ RISC-V</button>
-                    <button class="sim-tab-btn" id="tab-btn-c3d" onclick="simSetCodeTab('c3d')">📝 C3D</button>
-                    <button class="sim-flip-btn" onclick="simFlipCodeTab()" title="Voltear página entre RISC-V y Cuádruplas C3D">🔄 VOLTEAR</button>
+                    <button type="button" class="sim-tab-btn active" id="tab-btn-asm" onclick="simSetCodeTab('asm')">⚡ RISC-V</button>
+                    <button type="button" class="sim-tab-btn" id="tab-btn-c3d" onclick="simSetCodeTab('c3d')">📝 C3D</button>
+                    <button type="button" class="sim-flip-btn" onclick="simFlipCodeTab()" title="Voltear página entre RISC-V y Cuádruplas C3D">🔄 VOLTEAR</button>
                   </div>
                   <div style="display: flex; gap: 8px; align-items: center;">
                     <span id="sim-file-badge" class="sim-file-tag" style="color: var(--badge-teal); font-weight: bold; font-family: var(--font-code); font-size: 0.68rem;">📄 factorial_recursivo.s</span>
@@ -4736,6 +4743,23 @@ public class Persona {
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
+    // Desplazamiento puramente interno en el contenedor (NUNCA usa scrollIntoView ni altera Reveal.js/window)
+    function scrollInternalOnly(container, targetEl) {
+      if (!container || !targetEl) return;
+      const cRect = container.getBoundingClientRect();
+      const tRect = targetEl.getBoundingClientRect();
+      
+      // Margen de tolerancia para evitar movimientos si la línea ya está cómodamente visible
+      const margin = 32;
+      if (tRect.top >= (cRect.top + margin) && tRect.bottom <= (cRect.bottom - margin)) {
+        return;
+      }
+      
+      // Centrar el elemento activo en el contenedor mediante desplazamiento de scrollTop interno
+      const diff = (tRect.top + tRect.height / 2) - (cRect.top + cRect.height / 2);
+      container.scrollTop += diff;
+    }
+
     function simSetCodeTab(tab) {
       activeCodeTab = tab;
       const tabAsm = document.getElementById('tab-btn-asm');
@@ -4746,13 +4770,22 @@ public class Persona {
       }
       const codeList = document.getElementById('sim-code-list');
       const codeC3dAlt = document.getElementById('sim-code-c3d-alt');
+      const codeContainer = document.getElementById('sim-code-container');
       if (codeList && codeC3dAlt) {
         if (activeCodeTab === 'asm') {
           codeList.style.display = 'block';
           codeC3dAlt.style.display = 'none';
+          const activeItem = codeList.querySelector('.asm-line-row.active');
+          if (activeItem && codeContainer) {
+            scrollInternalOnly(codeContainer, activeItem);
+          }
         } else {
           codeList.style.display = 'none';
           codeC3dAlt.style.display = 'block';
+          const activeItem = codeC3dAlt.querySelector('.quad-item.active');
+          if (activeItem && codeContainer) {
+            scrollInternalOnly(codeContainer, activeItem);
+          }
         }
       }
     }
@@ -4857,6 +4890,9 @@ public class Persona {
       simState.phase = prog.initPhase;
       simState.log = "Simulador listo: " + prog.name + ". Presiona 'PASO A PASO'.";
 
+      const codeContainer = document.getElementById('sim-code-container');
+      if (codeContainer) codeContainer.scrollTop = 0;
+
       renderSimulator();
     }
 
@@ -4945,6 +4981,7 @@ public class Persona {
       const quadList = document.getElementById('sim-quad-list');
       if (quadList) {
         quadList.innerHTML = '';
+        let activeQuadDiv = null;
         prog.quads.forEach((q, idx) => {
           const div = document.createElement('div');
           const isActive = idx === activeQuadIdx;
@@ -4952,9 +4989,12 @@ public class Persona {
           div.innerHTML = `<span><strong class="quad-num">${q.num}</strong> ${q.text}</span><span>${isActive ? '◀ ACTIVA' : ''}</span>`;
           quadList.appendChild(div);
           if (isActive) {
-            setTimeout(() => div.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 30);
+            activeQuadDiv = div;
           }
         });
+        if (activeQuadDiv) {
+          scrollInternalOnly(quadList, activeQuadDiv);
+        }
       }
       const quadPcLabel = document.getElementById('sim-quad-pc');
       if (quadPcLabel) quadPcLabel.textContent = `Paso ${simState.stepIndex}/${prog.steps.length}`;
@@ -4968,6 +5008,7 @@ public class Persona {
       const fileBadge = document.getElementById('sim-file-badge');
       if (fileBadge) fileBadge.textContent = '📄 ' + (prog.asmFileName || 'programa.s');
 
+      let activeAsmDiv = null;
       if (codeList && prog.asmLines) {
         codeList.innerHTML = '';
         prog.asmLines.forEach((line, idx) => {
@@ -4989,13 +5030,14 @@ public class Persona {
           codeList.appendChild(div);
           
           if (isActive) {
-            setTimeout(() => div.scrollIntoView({ behavior: 'smooth', block: 'center' }), 30);
+            activeAsmDiv = div;
           }
         });
       }
 
       // 2b. Renderizar Vista Alternativa C3D (Volteo de Página)
       const codeC3dAlt = document.getElementById('sim-code-c3d-alt');
+      let activeC3dDiv = null;
       if (codeC3dAlt) {
         codeC3dAlt.innerHTML = '';
         prog.quads.forEach((q, idx) => {
@@ -5005,13 +5047,23 @@ public class Persona {
           div.innerHTML = `<span><strong class="quad-num">${q.num}</strong> <code>${escapeHtml(q.text)}</code> <span style="color: var(--text-muted); font-size: 0.68rem; margin-left: 6px;">(${q.desc})</span></span><span>${isActive ? '◀ ACTIVA' : ''}</span>`;
           codeC3dAlt.appendChild(div);
           if (isActive) {
-            setTimeout(() => div.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 30);
+            activeC3dDiv = div;
           }
         });
       }
 
       // Sincronizar visibilidad de pestañas C3D vs RISC-V
       simSetCodeTab(activeCodeTab);
+
+      // Desplazamiento seguro y puramente interno del contenedor de código (cero salto de pantalla)
+      const codeContainer = document.getElementById('sim-code-container');
+      if (codeContainer) {
+        if (activeCodeTab === 'asm' && activeAsmDiv) {
+          scrollInternalOnly(codeContainer, activeAsmDiv);
+        } else if (activeCodeTab === 'c3d' && activeC3dDiv) {
+          scrollInternalOnly(codeContainer, activeC3dDiv);
+        }
+      }
 
       const pcLabel = document.getElementById('sim-pc-label');
       if (pcLabel) { const activeLinePc = (prog.asmLines && prog.asmLines[activeLineIdx] && prog.asmLines[activeLineIdx].pc) ? prog.asmLines[activeLineIdx].pc : currentStep.pc; pcLabel.textContent = `PC: ${activeLinePc || '0x0000'}`; }

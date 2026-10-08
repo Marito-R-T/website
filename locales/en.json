@@ -132,5 +132,7 @@
   "HobbyDev": "Software & Open Source",
   "HobbyMath": "Mathematics & Logic",
   "HobbyFitness": "Fitness & Exercise",
-  "HobbyMountain": "Mountain Climbing"
+  "HobbyMountain": "Mountain Climbing",
+  "OpenMenu": "Open menu",
+  "CloseMenu": "Close menu"
 }

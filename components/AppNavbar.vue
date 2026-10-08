@@ -102,8 +102,10 @@
         <!-- Mobile Menu Button -->
         <button
           type="button"
-          class="md:hidden neo-btn p-2"
-          aria-label="Abrir menú"
+          class="md:!hidden neo-btn p-2"
+          :aria-label="mobileOpen ? $t('CloseMenu') : $t('OpenMenu')"
+          :aria-expanded="mobileOpen"
+          aria-controls="mobile-nav-drawer"
           @click="mobileOpen = !mobileOpen"
         >
           <svg v-if="mobileOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,57 +118,73 @@
       </div>
     </div>
 
-    <!-- Mobile Drawer -->
-    <div
-      v-if="mobileOpen"
-      class="mt-2 md:hidden mx-auto max-w-6xl rounded-2xl border-2 border-black bg-[#F6F3EB] p-4 shadow-brutal dark:border-white dark:bg-[#181B15] dark:shadow-brutal-white"
+    <!-- Mobile Drawer with Smooth Neo-Brutalist Transition -->
+    <Transition
+      enter-active-class="transition duration-150 ease-out"
+      enter-from-class="transform scale-95 opacity-0"
+      enter-to-class="transform scale-100 opacity-100"
+      leave-active-class="transition duration-100 ease-in"
+      leave-from-class="transform scale-100 opacity-100"
+      leave-to-class="transform scale-95 opacity-0"
     >
-      <nav class="flex flex-col gap-2">
-        <NuxtLink
-          :to="localePath('/')"
-          class="rounded-xl border-2 border-black bg-white px-4 py-2 font-bold shadow-brutal-sm dark:border-white dark:bg-[#1F231D]"
-          @click="mobileOpen = false"
-        >
-          {{ $t('Home') }}
-        </NuxtLink>
-        <NuxtLink
-          :to="localePath('/cursos')"
-          class="rounded-xl border-2 border-black bg-[#FBE795] px-4 py-2 font-bold text-black shadow-brutal-sm dark:border-white"
-          @click="mobileOpen = false"
-        >
-          {{ $t('Courses') }}
-        </NuxtLink>
-        <NuxtLink
-          :to="localePath('/cv')"
-          class="rounded-xl border-2 border-black bg-[#F4B6A6] px-4 py-2 font-bold text-black shadow-brutal-sm dark:border-white"
-          @click="mobileOpen = false"
-        >
-          {{ $t('CV') }}
-        </NuxtLink>
-        <NuxtLink
-          :to="localePath('/about')"
-          class="rounded-xl border-2 border-black bg-[#C6D8C4] px-4 py-2 font-bold text-black shadow-brutal-sm dark:border-white"
-          @click="mobileOpen = false"
-        >
-          {{ $t('About') }}
-        </NuxtLink>
-        <a
-          href="https://github.com/Marito-R-T"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="rounded-xl border-2 border-black bg-black text-white px-4 py-2 font-bold flex items-center justify-between shadow-brutal-sm dark:border-white dark:bg-white dark:text-black"
-          @click="mobileOpen = false"
-        >
-          <span>GitHub</span>
-          <span class="font-mono text-xs">↗</span>
-        </a>
-      </nav>
-    </div>
+      <div
+        v-if="mobileOpen"
+        id="mobile-nav-drawer"
+        class="mt-2 md:!hidden mx-auto max-w-6xl rounded-2xl border-2 border-black bg-[#F6F3EB] p-4 shadow-brutal dark:border-white dark:bg-[#181B15] dark:shadow-brutal-white"
+      >
+        <nav class="flex flex-col gap-2">
+          <NuxtLink
+            :to="localePath('/')"
+            class="rounded-xl border-2 border-black bg-white px-4 py-2 font-bold shadow-brutal-sm dark:border-white dark:bg-[#1F231D]"
+            @click="mobileOpen = false"
+          >
+            {{ $t('Home') }}
+          </NuxtLink>
+          <NuxtLink
+            :to="localePath('/cursos')"
+            class="rounded-xl border-2 border-black bg-[#FBE795] px-4 py-2 font-bold text-black shadow-brutal-sm dark:border-white"
+            @click="mobileOpen = false"
+          >
+            {{ $t('Courses') }}
+          </NuxtLink>
+          <NuxtLink
+            :to="localePath('/cv')"
+            class="rounded-xl border-2 border-black bg-[#F4B6A6] px-4 py-2 font-bold text-black shadow-brutal-sm dark:border-white"
+            @click="mobileOpen = false"
+          >
+            {{ $t('CV') }}
+          </NuxtLink>
+          <NuxtLink
+            :to="localePath('/about')"
+            class="rounded-xl border-2 border-black bg-[#C6D8C4] px-4 py-2 font-bold text-black shadow-brutal-sm dark:border-white"
+            @click="mobileOpen = false"
+          >
+            {{ $t('About') }}
+          </NuxtLink>
+          <a
+            href="https://github.com/Marito-R-T"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="rounded-xl border-2 border-black bg-black text-white px-4 py-2 font-bold flex items-center justify-between shadow-brutal-sm dark:border-white dark:bg-white dark:text-black"
+            @click="mobileOpen = false"
+          >
+            <span>GitHub</span>
+            <span class="font-mono text-xs">↗</span>
+          </a>
+        </nav>
+      </div>
+    </Transition>
   </header>
 </template>
 
 <script setup lang="ts">
 const { locale, setLocale } = useI18n()
 const localePath = useLocalePath()
+const route = useRoute()
 const mobileOpen = ref(false)
+
+// Close mobile drawer automatically when navigating
+watch(() => route.fullPath, () => {
+  mobileOpen.value = false
+})
 </script>
