@@ -83,6 +83,17 @@ export const useCourses = () => {
           date: '2026',
           tags: ['Virtualización', 'Grid Computing', 'Cloud', 'Infraestructura'],
           duration: '50 min'
+        },
+        {
+          id: 'inteligencia-de-negocios',
+          title: 'Inteligencia de Negocios: MIS, BI y Data Mining',
+          titleEn: 'Business Intelligence: MIS, BI & Data Mining',
+          description: 'Sistemas de Información Gerencial (MIS), bodegas de datos (Data Warehouse), modelado dimensional OLAP vs. OLTP, tuberías ETL/ELT y minería de datos.',
+          descriptionEn: 'Management Information Systems (MIS), Data Warehousing, OLAP vs. OLTP dimensional modeling, ETL/ELT pipelines, and data mining.',
+          file: '/slides/ss-1/inteligencia_de_negocios.html',
+          date: '2026',
+          tags: ['Business Intelligence', 'Data Warehouse', 'OLAP', 'ETL / ELT', 'Data Mining'],
+          duration: '60 min'
         }
       ]
     }

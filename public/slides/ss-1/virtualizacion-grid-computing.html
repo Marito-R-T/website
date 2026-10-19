@@ -2809,14 +2809,23 @@
     const node2Status = document.getElementById('node2-status');
     const node3Status = document.getElementById('node3-status');
     const node4Status = document.getElementById('node4-status');
+    const gridNode1 = document.getElementById('grid-node-1');
+    const gridNode3 = document.getElementById('grid-node-3');
 
     let isMatchmade = false;
+    let isEvicted = false;
 
     if (btnMatchmake) {
       btnMatchmake.addEventListener('click', () => {
         isMatchmade = true;
+        isEvicted = false;
+        btnEvict.textContent = '👤 Usuario Local Despierta (Desalojo)';
+        btnEvict.style.background = 'var(--orange-accent)';
         queueCountTxt.textContent = '0 Tareas (Todas Asignadas)';
         
+        if (gridNode1) gridNode1.style.borderColor = '#CBD5E1';
+        if (gridNode3) gridNode3.style.borderColor = '#CBD5E1';
+
         node1Status.style.background = '#DBEAFE';
         node1Status.style.color = '#1E40AF';
         node1Status.textContent = '● EJECUTANDO (Tarea GPU Inteligencia Artificial)';
@@ -2848,15 +2857,47 @@
           return;
         }
 
-        node3Status.style.background = '#FEE2E2';
-        node3Status.style.color = '#991B1B';
-        node3Status.textContent = '👤 PROFESOR USANDO LA PC (Expulsado)';
+        if (!isEvicted) {
+          isEvicted = true;
+          btnEvict.textContent = '↩️ Profesor se retira (Restaurar CUNOR)';
+          btnEvict.style.background = '#475569';
 
-        gridLog.innerHTML = `
-          <span style="color:#F87171;">⚡ [DESALOJO DISPARADO EN CUNOR]:</span><br>
-          &bull; Un profesor movió el ratón en Cobán &rarr; La tarea Grid se congeló en 100 ms.<br>
-          &bull; <span style="color:#38BDF8;">El trabajo fue mudado automáticamente a <strong>USAC Central</strong> para terminar su cálculo sin perder nada.</span>
-        `;
+          // CUNOR se desaloja
+          node3Status.style.background = '#FEE2E2';
+          node3Status.style.color = '#991B1B';
+          node3Status.textContent = '👤 PROFESOR EN PC (Expulsado)';
+          if (gridNode3) gridNode3.style.borderColor = '#EF4444';
+
+          // USAC Central asume la tarea desalojada visiblemente
+          node1Status.style.background = '#DBEAFE';
+          node1Status.style.color = '#1E40AF';
+          node1Status.innerHTML = '● EJECUTANDO (Tarea IA + <span style="background:#2563EB; color:white; padding:1px 5px; border-radius:4px;">📥 Simulación Química</span>)';
+          if (gridNode1) gridNode1.style.borderColor = '#2563EB';
+
+          gridLog.innerHTML = `
+            <span style="color:#F87171;">⚡ [DESALOJO Y REASIGNACIÓN EN VIVO]:</span><br>
+            &bull; <strong>CUNOR Cobán:</strong> El profesor movió el ratón &rarr; La tarea <em>'Simulación Química'</em> fue expulsada en 100 ms (checkpoint guardado).<br>
+            &bull; <span style="color:#38BDF8;"><strong>USAC Central (Rescatista):</strong> El Matchmaker reubicó la tarea inmediatamente en el servidor central. Ahora ejecuta ambas sin perder avance.</span>
+          `;
+        } else {
+          isEvicted = false;
+          btnEvict.textContent = '👤 Usuario Local Despierta (Desalojo)';
+          btnEvict.style.background = 'var(--orange-accent)';
+
+          node3Status.style.background = '#DCFCE7';
+          node3Status.style.color = '#166534';
+          node3Status.textContent = '● LIBRE (Listo para recibir tareas)';
+          if (gridNode3) gridNode3.style.borderColor = '#CBD5E1';
+
+          node1Status.style.background = '#DBEAFE';
+          node1Status.style.color = '#1E40AF';
+          node1Status.textContent = '● EJECUTANDO (Tarea GPU Inteligencia Artificial)';
+          if (gridNode1) gridNode1.style.borderColor = '#CBD5E1';
+
+          gridLog.innerHTML = `
+            <span style="color:#4ADE80;">🟢 [CUNOR LIBERADO]:</span> El profesor cerró su sesión en Cobán. La estación de trabajo vuelve a estar disponible como nodo oportunista para el Grid.
+          `;
+        }
       });
     }
 
